@@ -17,7 +17,6 @@
 // Neon.
 #include <arm_neon.h>
 
-// Complex number.
 typedef float64_t Real;
 typedef float64x2_t Complex;
 
@@ -30,20 +29,18 @@ inline Complex A_CC_C(const Complex C0, const Complex C1) { return vaddq_f64(C0,
 inline Complex S_CC_C(const Complex C0, const Complex C1) { return vsubq_f64(C0, C1); }
 
 inline Complex M_CC_C(const Complex C0, const Complex C1) {
-    Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
-    Real R2 = vgetq_lane_f64(C1, 0), R3 = vgetq_lane_f64(C1, 1); // C1.
+    register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
+    register Real R2 = vgetq_lane_f64(C1, 0), R3 = vgetq_lane_f64(C1, 1); // C1.
 
-    Complex C2 = {R0 * R2 - R1 * R3, R0 * R3 + R1 * R2};
-    return C2;
+    Complex C2 = {R0 * R2 - R1 * R3, R0 * R3 + R1 * R2}; return C2;
 }
 
 inline Complex D_CC_C(const Complex C0, const Complex C1) {
-    Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
-    Real R2 = vgetq_lane_f64(C1, 0), R3 = vgetq_lane_f64(C1, 1); // C1.
-    Real R4 = R2 * R2 + R3 * R3; // C1.
+    register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
+    register Real R2 = vgetq_lane_f64(C1, 0), R3 = vgetq_lane_f64(C1, 1); // C1.
+    register Real R4 = R2 * R2 + R3 * R3; // C1.
 
-    Complex C2 = {(R0 * R2 + R1 * R3) / R4, (R1 * R2 - R0 * R3) / R4};
-    return C2;
+    Complex C2 = {(R0 * R2 + R1 * R3) / R4, (R1 * R2 - R0 * R3) / R4}; return C2;
 }
 
 // Complex-Real arithmetic.
