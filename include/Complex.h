@@ -64,7 +64,7 @@ inline Complex D_CC_C(const Complex C0, const Complex C1) {
     Real R4 = R2 * R2 + R3 * R3; // C1.
 
     C2 = vsetq_lanef64((R0 * R2 + R1 * R3) / R4, C2, 0);
-    C2 = vsetq_lanef64((R0 * R3 - R1 * R2) / R4, C2, 1);
+    C2 = vsetq_lanef64((R1 * R2 - R0 * R3) / R4, C2, 1);
 
     return C2;
 }
