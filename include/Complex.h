@@ -11,14 +11,21 @@
 #ifndef NAQRA_COMPLEX_H
 #define NAQRA_COMPLEX_H
 
+// Types.
+#include <stddef.h>
+
 // Output.
 #include <stdio.h>
 
 // Neon.
 #include <arm_neon.h>
 
-typedef float64_t Real;
-typedef float64x2_t Complex;
+
+typedef size_t Natural; // Natural numbers.
+typedef ptrdiff_t Integer; // Integer numbers.
+typedef float64_t Real; // Real numbers.
+typedef float64x2_t Complex; // Complex numbers.
+
 
 // Complex "constructors".
 inline Complex C_R_C(const Real R0) { Complex C0 = {R0, 0.0}; return C0; }
