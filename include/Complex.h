@@ -19,7 +19,7 @@ typedef float64_t Real;
 typedef float64x2_t Complex;
 
 // Complex "constructors".
-inline Complex C_R_C(Real R0) {
+inline Complex C_R_C(const Real R0) {
     Complex C0;
 
     C0 = vsetq_lane_f64(R0, C0, 0);
@@ -28,7 +28,7 @@ inline Complex C_R_C(Real R0) {
     return C0;
 }
 
-inline Complex C_RR_C(Real R0, Real R1) {
+inline Complex C_RR_C(const Real R0, const Real R1) {
     Complex C0;
 
     C0 = vsetq_lane_f64(R0, C0, 0);
@@ -38,16 +38,16 @@ inline Complex C_RR_C(Real R0, Real R1) {
 }
 
 // Complex-Complex arithmetic.
-inline Complex A_CC_C(Complex C0, Complex C1) { return vaddq_f64(C0, C1); }
-inline Complex S_CC_C(Complex C0, Complex C1) { return vsubq_f64(C0, C1); }
-inline Complex M_CC_C(Complex C0, Complex C1) {}
-inline Complex D_CC_C(Complex C0, Complex C1) {}
+inline Complex A_CC_C(const Complex C0, const Complex C1) { return vaddq_f64(C0, C1); }
+inline Complex S_CC_C(const Complex C0, const Complex C1) { return vsubq_f64(C0, C1); }
+inline Complex M_CC_C(const Complex C0, const Complex C1) {}
+inline Complex D_CC_C(const Complex C0, const Complex C1) {}
 
 // Complex-Real arithmetic.
-inline Complex M_CR_C(Complex C0, Real C1) {}
-inline Complex D_CR_C(Complex C0, Real C1) {}
+inline Complex M_CR_C(const Complex C0, const Real R0) { return vmulq_f64(C0, vdupq_n_f64(R0)); }
+inline Complex D_CR_C(const Complex C0, const Real R0) { return vdiv_f64(C0, vdupq_n_f64(R0)); }
 
 // Output.
-inline void P_C_0(Complex C0) {}
+inline void P_C_0(const Complex C0) {}
 
 #endif
