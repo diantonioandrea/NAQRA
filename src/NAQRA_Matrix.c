@@ -8,7 +8,92 @@
  * 
  */
 
+#include <stdlib.h>
+#include <memory.h>
 #include "../include/Matrix.h"
+
+// Householder products.
+
+/**
+ * @brief Householder Left [Hsl] 
+ * 
+ * @param Cqt0 Complex Sqaure Matrix [Cq], Target [t].
+ * @param Cv0 Complex Vector [Cv].
+ * @param N0 Rows and Columns [N].
+ * @param N1 Entries [N].
+ */
+void Hsl_CqtCvNN_0(Complex* Cqt0, const Complex* Cv0, const Natural N0, const Natural N1) {
+    register Natural N2 = 0, N3;
+    const register Natural N4 = N0 - N1;
+
+    for(; N2 < N0; ++N2) {
+        register Complex C0 = {0.0, 0.0};
+
+        for(N3 = N4; N3 < N0; ++N3)
+            C0 = A_CC_C(C0, M_CC_C(Cj_C_C(Cv0[N3]), Cqt0[N2 * N0 + N3]));
+
+        C0 = M_CR_C(C0, 2.0);
+
+        for(N3 = N4; N3 < N0; ++N3)
+            Cqt0[N2 * N0 + N3] = S_CC_C(Cqt0[N2 * N0 + N3], M_CC_C(Cv0[N3], C0));
+    }
+}
+
+/**
+ * @brief Householder Right [Hsr] 
+ * 
+ * @param Cqt0 Complex Sqaure Matrix [Cq], Target [t].
+ * @param Cv0 Complex Vector [Cv].
+ * @param N0 Rows and Columns [N].
+ * @param N1 Entries [N].
+ */
+void Hsr_CqtCvNN_0(Complex* Cqt0, const Complex* Cv0, const Natural N0, const Natural N1) {
+    register Natural N2 = 0, N3;
+    const register Natural N4 = N0 - N1;
+
+    for(; N2 < N0; ++N2) {
+        register Complex C0 = {0.0, 0.0};
+
+        for(N3 = N4; N3 < N0; ++N3)
+            C0 = A_CC_C(C0, M_CC_C(Cqt0[N3 * N0 + N2], Cv0[N3]));
+
+        C0 = M_CR_C(C0, 2.0);
+
+        for(N3 = N4; N3 < N0; ++N3)
+            Cqt0[N3 * N0 + N2] = S_CC_C(Cqt0[N3 * N0 + N2], M_CCcj_C(C0, Cv0[N3]));
+    }
+}
+
+// Hessenberg form.
+
+/**
+ * @brief Hessenberg form [Hsn].
+ * 
+ * @param Cqt0 Complex Sqaure Matrix [Cq], Target [t].
+ * @param N0 Rows and Columns [N].
+ */
+void Hsn_CqtN_0(Complex* Cqt0, const Natural N0) {
+    register Natural N1 = 0;
+    register Complex* Cv0 = (Complex*) calloc(N0, sizeof(Complex));
+
+    for(; N1 < N0 - 2; ++N1) {
+
+        // Householder vector.
+
+        const register Natural N2 = N0 - N1 - 1;
+
+        memcpy(Cv0 + N1 + 1, Cqt0 + N1 * (N0 + 1) + 1, N2 * sizeof(Complex)); // Copy.
+        Cv0[N1 + 1] = S_CR_C(Cv0[N1 + 1], N2_CvN_R(Cv0 + N1 + 1, N2)); // Direction. [!]
+        Nz2_CvN_0(Cv0 + N1 + 1, N2); // Normalization.
+
+        // Householder products.
+
+        Hsl_CqtCvNN_0(Cqt0, Cv0, N0, N2);
+        Hsr_CqtCvNN_0(Cqt0, Cv0, N0, N2);
+    }
+
+    free(Cv0);
+}
 
 // Output.
 
