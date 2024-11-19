@@ -59,7 +59,36 @@ static inline Complex D_CR_C(const Complex C0, const Real R0) { return vdivq_f64
 
 // Output.
 
-static inline void P_C_0(const Complex C0) { printf("(%.4f, %.4f) ", vgetq_lane_f64(C0, 0), vgetq_lane_f64(C0, 1)); }
-static inline void Pn_C_0(const Complex C0) { printf("(%.4f, %.4f)\n", vgetq_lane_f64(C0, 0), vgetq_lane_f64(C0, 1)); }
+static inline void P_C_0(const Complex C0) { 
+    register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
+    
+    if(R1 < 0.0) {
+        if(R0 < 0.0)
+            printf("%.2e%.2ei ", R0, R1);
+        else
+            printf(" %.2e%.2ei ", R0, R1);
+    } else {
+        if(R0 < 0.0)
+            printf("%.2e+%.2ei ", R0, R1);
+        else
+            printf(" %.2e+%.2ei ", R0, R1);
+    }
+}
+
+static inline void Pn_C_0(const Complex C0) { 
+    register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
+    
+    if(R1 < 0.0) {
+        if(R0 < 0.0)
+            printf("%.2e%.2ei\n", R0, R1);
+        else
+            printf(" %.2e%.2ei\n", R0, R1);
+    } else {
+        if(R0 < 0.0)
+            printf("%.2e+%.2ei\n", R0, R1);
+        else
+            printf(" %.2e+%.2ei\n", R0, R1);
+    }
+}
 
 #endif
