@@ -78,15 +78,8 @@ static inline Complex Cj_C_C(const Complex C0) { return vsetq_lane_f64(-vgetq_la
 static inline void P_C_0(const Complex C0) { 
     const register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
 
-    if(R0 >= 0.0)
-        printf(" ");
-    
-    printf("%.2e", R0);
-
-    if(R1 >= 0.0)
-        printf("+");
-
-    printf("%.2e", R1);
+    if(R0 >= 0.0) printf(" "); printf("%.2e", R0);
+    if(R1 >= 0.0) printf("+"); printf("%.2ei ", R1);
 }
 
 static inline void Pn_C_0(const Complex C0) { P_C_0(C0); printf("\n"); }
