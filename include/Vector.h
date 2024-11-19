@@ -21,6 +21,7 @@ Complex Dot_CrvCcvN_C(const Complex*, const Complex*, const Natural);
 // Norms.
 
 Real N2_CvN_R(const Complex*, const Natural);
+void Nz2_CvN_0(Complex*, const Natural);
 
 // Output.
 
