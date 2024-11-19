@@ -11,8 +11,13 @@
 #ifndef NAQRA_MATRIX_H
 #define NAQRA_MATRIX_H
 
-// Complex numbers.
-#include "./Complex.h"
+// Vectors.
+#include "./Vector.h"
+
+// Householder products.
+
+void Hsl_CqtCvNN_0(Complex*, const Complex*, const Natural, const Natural);
+void Hsr_CqtCvNN_0(Complex*, const Complex*, const Natural, const Natural);
 
 // Hessenberg form.
 
