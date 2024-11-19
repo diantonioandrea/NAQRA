@@ -16,7 +16,7 @@
 
 // Hessenberg form.
 
-void Hsn_CqmN_0(Complex*, const Natural);
+void Hsn_CqtN_0(Complex*, const Natural);
 
 // Output.
 
