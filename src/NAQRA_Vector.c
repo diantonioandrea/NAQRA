@@ -21,7 +21,7 @@
  * @param N0 Entries [N].
  * @return Complex Complex [C].
  */
-Complex D_CrvCcvN_C(const Complex* Crv0, const Complex* Ccv0, const Natural N0) {
+Complex Dot_CrvCcvN_C(const Complex* Crv0, const Complex* Ccv0, const Natural N0) {
     register Natural N1 = 0;
 
     register Complex C0 = {0.0, 0.0};
