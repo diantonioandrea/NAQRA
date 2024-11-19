@@ -16,7 +16,7 @@
 
 // Dot product.
 
-Complex D_CrvCcvN_C(const Complex*, const Complex*, const Natural);
+Complex Dot_CrvCcvN_C(const Complex*, const Complex*, const Natural);
 
 // Norms.
 
