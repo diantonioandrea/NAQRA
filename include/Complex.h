@@ -38,29 +38,35 @@ static inline Complex A_CC_C(const Complex C0, const Complex C1) { return vaddq_
 static inline Complex S_CC_C(const Complex C0, const Complex C1) { return vsubq_f64(C0, C1); }
 
 static inline Complex M_CC_C(const Complex C0, const Complex C1) {
-    register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
-    register Real R2 = vgetq_lane_f64(C1, 0), R3 = vgetq_lane_f64(C1, 1); // C1.
+    const register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
+    const register Real R2 = vgetq_lane_f64(C1, 0), R3 = vgetq_lane_f64(C1, 1); // C1.
 
     Complex C2 = {R0 * R2 - R1 * R3, R0 * R3 + R1 * R2}; return C2;
 }
 
 static inline Complex D_CC_C(const Complex C0, const Complex C1) {
-    register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
-    register Real R2 = vgetq_lane_f64(C1, 0), R3 = vgetq_lane_f64(C1, 1); // C1.
-    register Real R4 = R2 * R2 + R3 * R3; // C1.
+    const register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
+    const register Real R2 = vgetq_lane_f64(C1, 0), R3 = vgetq_lane_f64(C1, 1); // C1.
+    const register Real R4 = R2 * R2 + R3 * R3; // C1.
 
     Complex C2 = {(R0 * R2 + R1 * R3) / R4, (R1 * R2 - R0 * R3) / R4}; return C2;
 }
 
 // Complex-Real arithmetic.
 
+static inline Complex A_CR_C(const Complex C0, const Real R1) { const register Complex C1 = {R1, 0.0}; return vaddq_f64(C0, C1); }
+static inline Complex S_CR_C(const Complex C0, const Real R1) { const register Complex C1 = {R1, 0.0}; return vsubq_f64(C0, C1); }
 static inline Complex M_CR_C(const Complex C0, const Real R0) { return vmulq_f64(C0, vdupq_n_f64(R0)); }
 static inline Complex D_CR_C(const Complex C0, const Real R0) { return vdivq_f64(C0, vdupq_n_f64(R0)); }
+
+// Complex methods.
+
+static inline Complex Cj_C_C(const Complex C0) { Complex C1 = {vgetq_lane_f64(C0, 0), -vgetq_lane_f64(C0, 1)}; return C1; }
 
 // Output.
 
 static inline void P_C_0(const Complex C0) { 
-    register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
+    const register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
     
     if(R1 < 0.0) {
         if(R0 < 0.0)
@@ -76,7 +82,7 @@ static inline void P_C_0(const Complex C0) {
 }
 
 static inline void Pn_C_0(const Complex C0) { 
-    register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
+    const register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
     
     if(R1 < 0.0) {
         if(R0 < 0.0)
