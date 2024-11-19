@@ -1,7 +1,7 @@
 /**
  * @file Matrix.h
  * @author Andrea Di Antonio (github.com/diantonioandrea)
- * @brief Complex matrices.
+ * @brief Complex matrices, column-major storage.
  * @date 2024-11-19
  * 
  * @copyright Copyright (c) 2024
