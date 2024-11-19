@@ -22,10 +22,14 @@
 void Pn_CmNN_0(const Complex* Cm0, const Natural N0, const Natural N1) {
     register Natural N2 = 0, N3;
 
+    printf("--- Matrix\n");
+
     for(; N2 < N0; ++N2) {
         for(N3 = 0; N3 < N1 - 1; ++N3)
             P_C_0(Cm0[N2 + N3 * N0]);
 
         Pn_C_0(Cm0[N2 + (N1 - 1) * N0]);
     }
+
+    printf("---\n");
 }
