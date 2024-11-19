@@ -11,6 +11,37 @@
 #include <math.h>
 #include "../include/Vector.h"
 
+// Dot product.
+
+/**
+ * @brief Dot [D].
+ * 
+ * @param Crv0 Complex Row Vector [Crv].
+ * @param Ccv0 Complex Column Vector [Ccv].
+ * @param N0 Entries [N].
+ * @return Complex Complex [C].
+ */
+Complex D_CrvCcvN_C(const Complex* Crv0, const Complex* Ccv0, const Natural N0) {
+    register Natural N1 = 0;
+
+    register Complex C0 = {0.0, 0.0};
+    register Complex C1 = {0.0, 0.0};
+    register Complex C2 = {0.0, 0.0};
+    register Complex C3 = {0.0, 0.0};
+
+    for(; N1 + 3 < N0; N1 += 4) {
+        C0 = vaddq_f64(C0, M_CCcj_C(Crv0[N1], Ccv0[N1]));
+        C1 = vaddq_f64(C1, M_CCcj_C(Crv0[N1 + 1], Ccv0[N1 + 1]));
+        C2 = vaddq_f64(C2, M_CCcj_C(Crv0[N1 + 2], Ccv0[N1 + 2]));
+        C3 = vaddq_f64(C3, M_CCcj_C(Crv0[N1 + 3], Ccv0[N1 + 3]));
+    }
+
+    for(; N1 < N0; ++N1)
+        C0 = vaddq_f64(C0, M_CCcj_C(Crv0[N1], Ccv0[N1]));
+
+    return vaddq_f64(vaddq_f64(C0, C1), vaddq_f64(C2, C3));
+}
+
 // Norms.
 
 /**
@@ -18,7 +49,7 @@
  * 
  * @param Cv0 Complex Vector [Cv].
  * @param N0 Entries [N].
- * @return Real 
+ * @return Real Real [R].
  */
 Real N2_CvN_R(const Complex* Cv0, const Natural N0) {
     register Natural N1 = 0;
