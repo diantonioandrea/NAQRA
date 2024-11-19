@@ -13,11 +13,11 @@
 // Output.
 
 /**
- * @brief Print with new line [Pn] Complex Matrix [Cm].
+ * @brief Print with new line [Pn].
  * 
- * @param Cm0 Complex Matrix.
- * @param N0 Rows.
- * @param N1 Columns.
+ * @param Cm0 Complex Matrix [Cm].
+ * @param N0 Rows [N].
+ * @param N1 Columns [N].
  */
 void Pn_CmNN_0(const Complex* Cm0, const Natural N0, const Natural N1) {
     register Natural N2 = 0, N3;
