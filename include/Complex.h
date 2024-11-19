@@ -26,6 +26,9 @@ typedef ptrdiff_t Integer; // Integer numbers.
 typedef float64_t Real; // Real numbers.
 typedef float64x2_t Complex; // Complex numbers.
 
+typedef float64x1_t Real1; // Real numbers (singlet).
+typedef float64x2_t Real2; // Real numbers (double).
+
 
 // Complex "constructors".
 
@@ -61,7 +64,7 @@ static inline Complex D_CR_C(const Complex C0, const Real R0) { return vdivq_f64
 
 // Complex methods.
 
-static inline Complex Cj_C_C(const Complex C0) { Complex C1 = {vgetq_lane_f64(C0, 0), -vgetq_lane_f64(C0, 1)}; return C1; }
+static inline Complex Cj_C_C(const Complex C0) { return vsetq_lane_f64(-vgetq_lane_f64(C0, 1), C0, 1); }
 
 // Output.
 
