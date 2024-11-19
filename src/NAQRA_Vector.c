@@ -54,22 +54,59 @@ Complex Dot_CrvCcvN_C(const Complex* Crv0, const Complex* Ccv0, const Natural N0
 Real N2_CvN_R(const Complex* Cv0, const Natural N0) {
     register Natural N1 = 0;
 
-    register Real2 Rp0 = {0.0, 0.0};
-    register Real2 Rp1 = {0.0, 0.0};
-    register Real2 Rp2 = {0.0, 0.0};
-    register Real2 Rp3 = {0.0, 0.0};
+    register Real2 Rt0 = {0.0, 0.0};
+    register Real2 Rt1 = {0.0, 0.0};
+    register Real2 Rt2 = {0.0, 0.0};
+    register Real2 Rt3 = {0.0, 0.0};
 
     for(; N1 + 3 < N0; N1 += 4) {
-        Rp0 = vaddq_f64(Rp0, vmulq_f64(Cv0[N1], Cv0[N1]));
-        Rp1 = vaddq_f64(Rp1, vmulq_f64(Cv0[N1 + 1], Cv0[N1 + 1]));
-        Rp2 = vaddq_f64(Rp2, vmulq_f64(Cv0[N1 + 2], Cv0[N1 + 2]));
-        Rp3 = vaddq_f64(Rp3, vmulq_f64(Cv0[N1 + 3], Cv0[N1 + 3]));
+        Rt0 = vaddq_f64(Rt0, vmulq_f64(Cv0[N1], Cv0[N1]));
+        Rt1 = vaddq_f64(Rt1, vmulq_f64(Cv0[N1 + 1], Cv0[N1 + 1]));
+        Rt2 = vaddq_f64(Rt2, vmulq_f64(Cv0[N1 + 2], Cv0[N1 + 2]));
+        Rt3 = vaddq_f64(Rt3, vmulq_f64(Cv0[N1 + 3], Cv0[N1 + 3]));
     }
 
     for(; N1 < N0; ++N1)
-        Rp0 = vaddq_f64(Rp0, vmulq_f64(Cv0[N1], Cv0[N1]));
+        Rt0 = vaddq_f64(Rt0, vmulq_f64(Cv0[N1], Cv0[N1]));
 
-    return sqrt(vaddvq_f64(Rp0) + vaddvq_f64(Rp1) + vaddvq_f64(Rp2) + vaddvq_f64(Rp3));
+    return sqrt(vaddvq_f64(Rt0) + vaddvq_f64(Rt1) + vaddvq_f64(Rt2) + vaddvq_f64(Rt3));
+}
+
+/**
+ * @brief Normalize 2 [Nz2].
+ * 
+ * @param Cvt0 Cv0 Complex Vector [Cv], Target [t].
+ * @param N0 Entries [N].
+ */
+void Nz2_CvN_0(Complex* Cvt0, const Natural N0) {
+    register Natural N1 = 0;
+
+    register Real2 Rt1 = {0.0, 0.0};
+    register Real2 Rt2 = {0.0, 0.0};
+    register Real2 Rt3 = {0.0, 0.0};
+    register Real2 Rt0 = {0.0, 0.0};
+
+    for(; N1 + 3 < N0; N1 += 4) {
+        Rt0 = vaddq_f64(Rt0, vmulq_f64(Cvt0[N1], Cvt0[N1]));
+        Rt1 = vaddq_f64(Rt1, vmulq_f64(Cvt0[N1 + 1], Cvt0[N1 + 1]));
+        Rt2 = vaddq_f64(Rt2, vmulq_f64(Cvt0[N1 + 2], Cvt0[N1 + 2]));
+        Rt3 = vaddq_f64(Rt3, vmulq_f64(Cvt0[N1 + 3], Cvt0[N1 + 3]));
+    }
+
+    for(; N1 < N0; ++N1)
+        Rt0 = vaddq_f64(Rt0, vmulq_f64(Cvt0[N1], Cvt0[N1]));
+
+    const register Real2 Rt4 = vdupq_n_f64(vaddvq_f64(Rt0) + vaddvq_f64(Rt1) + vaddvq_f64(Rt2) + vaddvq_f64(Rt3));
+
+    for(N1 = 0; N1 + 3 < N0; N1 += 4) {
+        Cvt0[N1] = vdivq_f64(Cvt0[N1], Rt4);
+        Cvt0[N1 + 1] = vdivq_f64(Cvt0[N1 + 1], Rt4);
+        Cvt0[N1 + 2] = vdivq_f64(Cvt0[N1 + 2], Rt4);
+        Cvt0[N1 + 3] = vdivq_f64(Cvt0[N1 + 3], Rt4);
+    }
+
+    for(; N1 < N0; ++N1)
+        Cvt0[N1] = vdivq_f64(Cvt0[N1], Rt4);
 }
 
 // Output.
