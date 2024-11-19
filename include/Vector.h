@@ -14,6 +14,10 @@
 // Complex numbers.
 #include "./Complex.h"
 
+// Norms.
+
+Real N2_CvN_R(const Complex*, const Natural);
+
 // Output.
 
 void Pn_CrvN_0(const Complex*, const Natural);
