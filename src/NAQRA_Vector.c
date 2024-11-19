@@ -96,7 +96,7 @@ void Nz2_CvN_0(Complex* Cvt0, const Natural N0) {
     for(; N1 < N0; ++N1)
         Rt0 = vaddq_f64(Rt0, vmulq_f64(Cvt0[N1], Cvt0[N1]));
 
-    const register Real2 Rt4 = vdupq_n_f64(vaddvq_f64(Rt0) + vaddvq_f64(Rt1) + vaddvq_f64(Rt2) + vaddvq_f64(Rt3));
+    const register Real2 Rt4 = vdupq_n_f64(sqrt(vaddvq_f64(Rt0) + vaddvq_f64(Rt1) + vaddvq_f64(Rt2) + vaddvq_f64(Rt3)));
 
     for(N1 = 0; N1 + 3 < N0; N1 += 4) {
         Cvt0[N1] = vdivq_f64(Cvt0[N1], Rt4);
