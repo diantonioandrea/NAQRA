@@ -14,6 +14,10 @@
 // Complex numbers.
 #include "./Complex.h"
 
+// Dot product.
+
+Complex D_CrvCcvN_C(const Complex*, const Complex*, const Natural);
+
 // Norms.
 
 Real N2_CvN_R(const Complex*, const Natural);
