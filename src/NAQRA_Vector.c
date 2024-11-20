@@ -9,7 +9,21 @@
  */
 
 #include <math.h>
+#include <memory.h>
 #include "../include/Vector.h"
+
+// Copy.
+
+/**
+ * @brief Copy [Cp].
+ * 
+ * @param Cvt0 Complex Vector [Cv], Target [t].
+ * @param Cv0 Complex Vector [Cv].
+ * @param N0 Entries.
+ */
+void Cp_CvtCvN_0(Complex* Cvt0, const Complex* Cv0, Natural N0) {
+    memcpy(Cvt0, Cv0, N0 * sizeof(Complex));
+}
 
 // Dot product.
 
