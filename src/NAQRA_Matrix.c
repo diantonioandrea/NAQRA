@@ -77,12 +77,13 @@ void Hsn_CqtN_0(Complex* Cqt0, const Natural N0) {
     register Complex* Cv0 = (Complex*) calloc(N0, sizeof(Complex));
 
     for(; N1 < N0 - 2; ++N1) {
-        const register Natural N2 = N0 - N1 - 1;
-
+        
         // Householder vector.
 
+        const register Natural N2 = N0 - N1 - 1; // Entries.
+
         Cp_CvtCvN_0(Cv0 + N1 + 1, Cqt0 + N1 * (N0 + 1) + 1, N2); // Copy.
-        Cv0[N1 + 1] = S_CC_C(Cv0[N1 + 1], M_CR_C(Nzd2_C_C(Cv0[N1 + 1]), N2_CvN_R(Cv0 + N1 + 1, N2))); // Direction. [!]
+        Cv0[N1 + 1] = S_CC_C(Cv0[N1 + 1], M_CR_C(Nzd2_C_C(Cv0[N1 + 1]), N2_CvN_R(Cv0 + N1 + 1, N2))); // Direction.
         Nz2_CvN_0(Cv0 + N1 + 1, N2); // Normalization.
 
         // Householder products.
