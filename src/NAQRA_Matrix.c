@@ -9,7 +9,6 @@
  */
 
 #include <stdlib.h>
-#include <memory.h>
 #include "../include/Matrix.h"
 
 // Householder products.
