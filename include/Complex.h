@@ -41,6 +41,10 @@ typedef float64x2_t Real2; // Real numbers (double).
 #define TOL0 1.0E-12
 #endif
 
+#ifndef TOL1
+#define TOL1 1.0E-24
+#endif
+
 #ifndef IT0
 #define IT0 1E2
 #endif
@@ -110,8 +114,11 @@ static inline Complex Nzd2_C_C(const Complex C0) {
 static inline void P_C_0(const Complex C0) { 
     const register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
 
-    if(fabs(R0) <= TOL0) printf("\x1b[2m"); if(R0 >= 0.0) printf(" "); printf("%.2e", R0); printf("\033[0m");
-    if(fabs(R1) <= TOL0) printf("\x1b[2m"); if(R1 >= 0.0) printf("+"); printf("%.2ei ", R1); printf("\033[0m");
+    if(fabs(R0) <= TOL1) { printf("\x1b[2m"); printf(" %.2e", 0.0); printf("\033[0m"); }
+    else { if(fabs(R0) <= TOL0) printf("\x1b[2m"); if(R0 >= 0.0) printf(" "); printf("%.2e", R0); printf("\033[0m"); }
+
+    if(fabs(R1) <= TOL1) { printf("\x1b[2m"); printf("+%.2ei ", 0.0); printf("\033[0m"); }
+    else { if(fabs(R1) <= TOL0) printf("\x1b[2m"); if(R1 >= 0.0) printf("+"); printf("%.2ei ", R1); printf("\033[0m"); }
 }
 
 static inline void Pn_C_0(const Complex C0) { P_C_0(C0); printf("\n"); }
