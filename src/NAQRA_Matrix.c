@@ -30,7 +30,7 @@ void Hsl_CqtCvNN_0(Complex* Cqt0, const Complex* Cv0, const Natural N0, const Na
         register Complex C0 = {0.0, 0.0};
 
         for(N3 = N4; N3 < N0; ++N3)
-            C0 = A_CC_C(C0, M_CC_C(Cj_C_C(Cv0[N3]), Cqt0[N2 * N0 + N3]));
+            C0 = A_CC_C(C0, M_CcjC_C(Cv0[N3], Cqt0[N2 * N0 + N3]));
 
         C0 = M_CR_C(C0, 2.0);
 
