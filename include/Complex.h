@@ -17,9 +17,14 @@
 // Output.
 #include <stdio.h>
 
+// Math.
+#include <math.h>
+
 // Neon.
 #include <arm_neon.h>
 
+
+// Types.
 
 typedef size_t Natural; // Natural numbers.
 typedef ptrdiff_t Integer; // Integer numbers.
@@ -28,6 +33,13 @@ typedef float64x2_t Complex; // Complex numbers.
 
 typedef float64x1_t Real1; // Real numbers (singlet).
 typedef float64x2_t Real2; // Real numbers (double).
+
+
+// Constants.
+
+#ifndef TOL0
+#define TOL0 1.0E-12
+#endif
 
 
 // Complex "constructors".
@@ -73,13 +85,22 @@ static inline Complex D_CR_C(const Complex C0, const Real R0) { return vdivq_f64
 
 static inline Complex Cj_C_C(const Complex C0) { return vsetq_lane_f64(-vgetq_lane_f64(C0, 1), C0, 1); }
 
+// Norms.
+
+static inline Real N2_C_R(const Complex C0) { const register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); return sqrt(R0 * R0 + R1 * R1); }
+
+static inline Complex Nzd2_C_C(const Complex C0) {
+    const register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); 
+    return vdivq_f64(C0, vdupq_n_f64(sqrt(R0 * R0 + R1 * R1)));
+}
+
 // Output.
 
 static inline void P_C_0(const Complex C0) { 
     const register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
 
-    if(R0 >= 0.0) printf(" "); printf("%.2e", R0);
-    if(R1 >= 0.0) printf("+"); printf("%.2ei ", R1);
+    if(fabs(R0) <= TOL0) printf("\x1b[2m"); if(R0 >= 0.0) printf(" "); printf("%.2e", R0); printf("\033[0m");
+    if(fabs(R1) <= TOL0) printf("\x1b[2m"); if(R1 >= 0.0) printf("+"); printf("%.2ei ", R1); printf("\033[0m");
 }
 
 static inline void Pn_C_0(const Complex C0) { P_C_0(C0); printf("\n"); }
