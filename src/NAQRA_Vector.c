@@ -94,33 +94,17 @@ Real N2_CvN_R(const Complex* Cv0, const Natural N0) {
  */
 void Nz2_CvN_0(Complex* Cvt0, const Natural N0) {
     register Natural N1 = 0;
-
-    register Real2 Rt1 = {0.0, 0.0};
-    register Real2 Rt2 = {0.0, 0.0};
-    register Real2 Rt3 = {0.0, 0.0};
-    register Real2 Rt0 = {0.0, 0.0};
+    const register Real2 Rt0 = vdupq_n_f64(N2_CvN_R(Cvt0, N0));
 
     for(; N1 + 3 < N0; N1 += 4) {
-        Rt0 = vaddq_f64(Rt0, vmulq_f64(Cvt0[N1], Cvt0[N1]));
-        Rt1 = vaddq_f64(Rt1, vmulq_f64(Cvt0[N1 + 1], Cvt0[N1 + 1]));
-        Rt2 = vaddq_f64(Rt2, vmulq_f64(Cvt0[N1 + 2], Cvt0[N1 + 2]));
-        Rt3 = vaddq_f64(Rt3, vmulq_f64(Cvt0[N1 + 3], Cvt0[N1 + 3]));
+        Cvt0[N1] = vdivq_f64(Cvt0[N1], Rt0);
+        Cvt0[N1 + 1] = vdivq_f64(Cvt0[N1 + 1], Rt0);
+        Cvt0[N1 + 2] = vdivq_f64(Cvt0[N1 + 2], Rt0);
+        Cvt0[N1 + 3] = vdivq_f64(Cvt0[N1 + 3], Rt0);
     }
 
     for(; N1 < N0; ++N1)
-        Rt0 = vaddq_f64(Rt0, vmulq_f64(Cvt0[N1], Cvt0[N1]));
-
-    const register Real2 Rt4 = vdupq_n_f64(sqrt(vaddvq_f64(Rt0) + vaddvq_f64(Rt1) + vaddvq_f64(Rt2) + vaddvq_f64(Rt3)));
-
-    for(N1 = 0; N1 + 3 < N0; N1 += 4) {
-        Cvt0[N1] = vdivq_f64(Cvt0[N1], Rt4);
-        Cvt0[N1 + 1] = vdivq_f64(Cvt0[N1 + 1], Rt4);
-        Cvt0[N1 + 2] = vdivq_f64(Cvt0[N1 + 2], Rt4);
-        Cvt0[N1 + 3] = vdivq_f64(Cvt0[N1 + 3], Rt4);
-    }
-
-    for(; N1 < N0; ++N1)
-        Cvt0[N1] = vdivq_f64(Cvt0[N1], Rt4);
+        Cvt0[N1] = vdivq_f64(Cvt0[N1], Rt0);
 }
 
 // Output.
