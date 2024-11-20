@@ -66,6 +66,13 @@ static inline Complex M_CCcj_C(const Complex C0, const Complex C1) {
     Complex C2 = {R0 * R2 + R1 * R3, R1 * R2 - R0 * R3}; return C2;
 }
 
+static inline Complex M_CcjC_C(const Complex C0, const Complex C1) {
+    const register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
+    const register Real R2 = vgetq_lane_f64(C1, 0), R3 = vgetq_lane_f64(C1, 1); // C1.
+
+    Complex C2 = {R0 * R2 + R1 * R3, R0 * R3 - R1 * R2}; return C2;
+}
+
 static inline Complex D_CC_C(const Complex C0, const Complex C1) {
     const register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
     const register Real R2 = vgetq_lane_f64(C1, 0), R3 = vgetq_lane_f64(C1, 1); // C1.
