@@ -10,6 +10,8 @@ An implementation of the [_QR Algorithm_](https://en.wikipedia.org/wiki/QR_algor
 
 - [Introduction](#introduction)
 - [Table of Contents](#table-of-contents)
+- [Setup](#setup)
+    - [Cloning the Repository](#cloning-the-repository)
 
 ## Setup
 
