@@ -83,7 +83,7 @@ void Gvl_CqtCCNNN_0(Complex* Cqt0, const Complex C0, const Complex C1, const Nat
         const register Complex C2 = Cqt0[N3];
         const register Complex C3 = Cqt0[N4];
 
-        Cqt0[N3] = A_CC_C(M_CC_C(C0, C2), M_CC_C(C1, C3)); // [?]
+        Cqt0[N3] = A_CC_C(M_CcjC_C(C0, C2), M_CcjC_C(C1, C3)); // [?]
         Cqt0[N4] = S_CC_C(M_CC_C(C0, C3), M_CC_C(C1, C2)); // [?]
     }
 }
@@ -107,7 +107,7 @@ void Gvrtr_CqtCCNNN_0(Complex* Cqt0, const Complex C0, const Complex C1, const N
         const register Complex C3 = Cqt0[N4];
 
         Cqt0[N3] = A_CC_C(M_CC_C(C2, C0), M_CC_C(C3, C1)); // [?]
-        Cqt0[N4] = S_CC_C(M_CC_C(C3, C0), M_CC_C(C2, C1)); // [?]
+        Cqt0[N4] = S_CC_C(M_CCcj_C(C3, C0), M_CCcj_C(C2, C1)); // [?]
     }
 }
 
@@ -166,6 +166,16 @@ void Eig_ChsnqtN_0(Complex *Chsnqt0, const Natural N0) {
 
         for(N2 = 0; N2 < N0 - 1; ++N2)
             Gvrtr_CqtCCNNN_0(Chsnqt0, Cv0[2 * N2], Cv0[2 * N2 + 1], N0, N2, 1);
+
+        // Naive exit argument.
+
+        register Real R0 = 0.0;
+
+        for(N2 = 0; N2 < N0 - 1; ++N2)
+            R0 += N2_C_R(Chsnqt0[N2 * (N0 + 1)]);
+    
+        if(R0 < TOL0)
+            break;
     }
 
     free(Cv0);
