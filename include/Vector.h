@@ -18,6 +18,11 @@
 
 void Cp_CvtCvN_0(Complex*, const Complex*, Natural);
 
+// Complex-Real arithmetic.
+
+void M_CvR_0(Complex* , const Real, const Natural);
+void D_CvR_0(Complex* , const Real, const Natural);
+
 // Dot product.
 
 Complex Dot_CrvCcvN_C(const Complex*, const Complex*, const Natural);
