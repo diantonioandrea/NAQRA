@@ -118,7 +118,7 @@ void Gvrhr_ChsnqtCCNN_0(Complex* Chsnqt0, const Complex C0, const Complex C1, co
  * @param N0 Rows and Columns [N].
  */
 void Hsn_CqtN_0(Complex* Cqt0, const Natural N0) {
-    register Natural N1 = 0, N2;
+    register Natural N1 = 0;
     register Complex* Cv0 = (Complex*) calloc(N0, sizeof(Complex));
     register Complex* Cv1 = (Complex*) calloc(N0 - 2, sizeof(Complex)); // Zeros.
 
