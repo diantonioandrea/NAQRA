@@ -73,11 +73,10 @@ void Hsr_CqtCvNN_0(Complex* Cqt0, const Complex* Cv0, const Natural N0, const Na
  * @param C1 Complex Number [C].
  * @param N0 Rows and Columns [N].
  * @param N1 Index [N].
- * @param N2 Offset [N].
  */
-void Gvl_ChsnqtCCNNN_0(Complex* Chsnqt0, const Complex C0, const Complex C1, const Natural N0, const Natural N1, const Natural N2) {
+void Gvl_ChsnqtCCNN_0(Complex* Chsnqt0, const Complex C0, const Complex C1, const Natural N0, const Natural N1) {
     register Natural N3 = (N1 + 1) * (N0 + 1) - 1;
-    register Natural N4 = N3 + N2;
+    register Natural N4 = N3 + 1;
 
     for(; N3 < N0 * N0; N3 += N0, N4 += N0) {
         const register Complex C2 = Chsnqt0[N3];
@@ -96,11 +95,10 @@ void Gvl_ChsnqtCCNNN_0(Complex* Chsnqt0, const Complex C0, const Complex C1, con
  * @param C1 Complex Number [C].
  * @param N0 Rows and Columns [N].
  * @param N1 Index [N].
- * @param N2 Offset [N].
  */
-void Gvrhr_ChsnqtCCNNN_0(Complex* Chsnqt0, const Complex C0, const Complex C1, const Natural N0, const Natural N1, const Natural N2) {
+void Gvrhr_ChsnqtCCNN_0(Complex* Chsnqt0, const Complex C0, const Complex C1, const Natural N0, const Natural N1) {
     register Natural N3 = N1 * N0;
-    register Natural N4 = (N1 + N2) * N0;
+    register Natural N4 = (N1 + 1) * N0;
 
     for(; N3 < N1 * (N0 + 1) + 2; ++N3, ++N4) {
         const register Complex C2 = Chsnqt0[N3];
@@ -185,11 +183,11 @@ void Eig_ChsnqtN_0(Complex *Chsnqt0, const Natural N0) {
             Chsnqt0[N2 * (N0 + 1) + 1] = C_R_C(0.0);
 
             // Other products.
-            Gvl_ChsnqtCCNNN_0(Chsnqt0, Cv0[2 * N2], Cv0[2 * N2 + 1], N0, N2, 1);
+            Gvl_ChsnqtCCNN_0(Chsnqt0, Cv0[2 * N2], Cv0[2 * N2 + 1], N0, N2);
         }
 
         for(N2 = 0; N2 < N3; ++N2) // RQ.
-            Gvrhr_ChsnqtCCNNN_0(Chsnqt0, Cv0[2 * N2], Cv0[2 * N2 + 1], N0, N2, 1);
+            Gvrhr_ChsnqtCCNN_0(Chsnqt0, Cv0[2 * N2], Cv0[2 * N2 + 1], N0, N2);
 
         for(N2 = 0; N2 < N3 + 1; ++N2) // Shift.
             Chsnqt0[N2 * (N0 + 1)] = A_CC_C(Chsnqt0[N2 * (N0 + 1)], C0);
