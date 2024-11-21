@@ -151,21 +151,20 @@ void Hsn_CqtN_0(Complex* Cqt0, const Natural N0) {
  * @param N0 Rows and Columns [N].
  */
 void Eig_ChsnqtN_0(Complex *Chsnqt0, const Natural N0) {
-    register Natural N1 = 0, N2;
-    register Real R0;
-    register Complex C0;
+    register Natural N1 = 0, N2, N3 = N0 - 1;
+    register Complex C0 = Chsnqt0[N3 * (N0 + 1)];
     register Complex* Cv0 = (Complex*) calloc(2 * (N0 - 1), sizeof(Complex));
 
     #ifdef VERBOSE
     printf("--- QR Algorithm\n");
     #endif
 
-    for(C0 = Chsnqt0[N0 * N0 - 1];; C0 = Chsnqt0[N0 * N0 - 1], ++N1) {
+    for(;; C0 = Chsnqt0[N3 * (N0 + 1)], ++N1) {
 
-        for(N2 = 0; N2 < N0; ++N2) // Shift.
+        for(N2 = 0; N2 < N3 + 1; ++N2) // Shift.
             Chsnqt0[N2 * (N0 + 1)] = S_CC_C(Chsnqt0[N2 * (N0 + 1)], C0);
 
-        for(N2 = 0; N2 < N0 - 1; ++N2) { // QR.
+        for(N2 = 0; N2 < N3; ++N2) { // QR.
             Cv0[2 * N2] = Chsnqt0[N2 * (N0 + 1)];
             Cv0[2 * N2 + 1] = Chsnqt0[N2 * (N0 + 1) + 1];
 
@@ -174,26 +173,18 @@ void Eig_ChsnqtN_0(Complex *Chsnqt0, const Natural N0) {
             Gvl_CqtCCNNN_0(Chsnqt0, Cv0[2 * N2], Cv0[2 * N2 + 1], N0, N2, 1);
         }
 
-        for(N2 = 0; N2 < N0 - 1; ++N2) // RQ.
+        for(N2 = 0; N2 < N3; ++N2) // RQ.
             Gvrtr_CqtCCNNN_0(Chsnqt0, Cv0[2 * N2], Cv0[2 * N2 + 1], N0, N2, 1);
 
-        for(N2 = 0; N2 < N0; ++N2) // Shift.
+        for(N2 = 0; N2 < N3 + 1; ++N2) // Shift.
             Chsnqt0[N2 * (N0 + 1)] = A_CC_C(Chsnqt0[N2 * (N0 + 1)], C0);
 
-        for(R0 = 0.0, N2 = 0; N2 < N0 - 1; ++N2)
-            R0 += N2_C_R(Chsnqt0[N2 * (N0 + 1) + 1]);
-    
-        if(R0 <= TOL0) { // Naive exit argument.
-            #ifdef VERBOSE
-            printf("Exited after %zu iterations.\n", N1 + 1);
-            #endif
-
-            break; 
-        }
+        if(N2_C_R(Chsnqt0[(N3 - 1) * (N0 + 1) + 1]) <= TOL0) --N3; // Deflation.
+        if(N3 == 0) break; // Stop.
     }
 
     #ifdef VERBOSE
-    printf("Residual: %.2e.\n", R0);
+    printf("Exited after %zu iterations.\n", N1 + 1);
     printf("---\n");
     #endif
 
