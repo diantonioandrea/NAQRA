@@ -21,8 +21,8 @@ void Hsr_CqtCvNN_0(Complex*, const Complex*, const Natural, const Natural);
 
 // Givens products.
 
-void Gvl_CqtCCNNN_0(Complex*, const Complex, const Complex, const Natural, const Natural, const Natural);
-void Gvrhr_CqtCCNNN_0(Complex*, const Complex, const Complex, const Natural, const Natural, const Natural);
+void Gvl_ChsnqtCCNNN_0(Complex*, const Complex, const Complex, const Natural, const Natural, const Natural);
+void Gvrhr_ChsnqtCCNNN_0(Complex*, const Complex, const Complex, const Natural, const Natural, const Natural);
 
 // Hessenberg form.
 
