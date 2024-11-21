@@ -120,6 +120,7 @@ void Gvrhr_ChsnqtCCNN_0(Complex* Chsnqt0, const Complex C0, const Complex C1, co
 void Hsn_CqtN_0(Complex* Cqt0, const Natural N0) {
     register Natural N1 = 0, N2;
     register Complex* Cv0 = (Complex*) calloc(N0, sizeof(Complex));
+    register Complex* Cv1 = (Complex*) calloc(N0 - 2, sizeof(Complex)); // Zeros.
 
     for(; N1 < N0 - 2; ++N1) {
         
@@ -138,11 +139,11 @@ void Hsn_CqtN_0(Complex* Cqt0, const Natural N0) {
 
         // Zeroing.
 
-        for(N2 = N1 + 2; N2 < N0; ++N2)
-            Cqt0[N1 * N0 + N2] = C_R_C(0.0);
+        Cp_CvtCvN_0(Cqt0 + N1 * (N0 + 1) + 2, Cv1, N0 - N1 - 2);
     }
 
     free(Cv0);
+    free(Cv1);
 }
 
 // QR algorithm.
