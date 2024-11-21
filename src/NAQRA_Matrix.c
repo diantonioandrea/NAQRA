@@ -152,9 +152,14 @@ void Hsn_CqtN_0(Complex* Cqt0, const Natural N0) {
  */
 void Eig_ChsnqtN_0(Complex *Chsnqt0, const Natural N0) {
     register Natural N1 = 0, N2;
+    register Real R0;
     register Complex* Cv0 = (Complex*) calloc(2 * (N0 - 1), sizeof(Complex));
 
-    for(; N1 < IT0; ++N1) {
+    #ifdef VERBOSE
+    printf("--- QR Algorithm\n");
+    #endif
+
+    for(;; ++N1) {
         for(N2 = 0; N2 < N0 - 1; ++N2) {
             Cv0[2 * N2] = Chsnqt0[N2 * (N0 + 1)];
             Cv0[2 * N2 + 1] = Chsnqt0[N2 * (N0 + 1) + 1];
@@ -167,16 +172,22 @@ void Eig_ChsnqtN_0(Complex *Chsnqt0, const Natural N0) {
         for(N2 = 0; N2 < N0 - 1; ++N2)
             Gvrtr_CqtCCNNN_0(Chsnqt0, Cv0[2 * N2], Cv0[2 * N2 + 1], N0, N2, 1);
 
-        // Naive exit argument.
-
-        register Real R0 = 0.0;
-
-        for(N2 = 0; N2 < N0 - 1; ++N2)
-            R0 += N2_C_R(Chsnqt0[N2 * (N0 + 1)]);
+        for(R0 = 0.0, N2 = 0; N2 < N0 - 1; ++N2)
+            R0 += N2_C_R(Chsnqt0[N2 * (N0 + 1) + 1]);
     
-        if(R0 < TOL0)
-            break;
+        if(R0 <= TOL0) { // Naive exit argument.
+            #ifdef VERBOSE
+            printf("Exited after %zu iterations.\n", N1 + 1);
+            #endif
+
+            break; 
+        }
     }
+
+    #ifdef VERBOSE
+    printf("Residual: %.2e.\n", R0);
+    printf("---\n");
+    #endif
 
     free(Cv0);
 }
