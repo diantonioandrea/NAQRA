@@ -22,20 +22,63 @@
  * @param N1 Entries [N].
  */
 void Hsl_CqtCvNN_0(Complex* Cqt0, const Complex* Cv0, const Natural N0, const Natural N1) {
-    register Natural N2 = 0, N3;
-    const register Natural N4 = N0 - N1;
+    register Natural N2 = 0, N3, N4;
+    const register Natural N5 = N0 - N1;
 
-    for(; N2 < N0; ++N2) {
-        register Complex C0 = {0.0, 0.0};
+    register Complex C0;
+    register Complex C1 = {0.0, 0.0};
+    register Complex C2 = {0.0, 0.0};
+    register Complex C3 = {0.0, 0.0};
+    register Complex C4 = {0.0, 0.0};
 
-        for(N3 = N4; N3 < N0; ++N3)
-            C0 = A_CC_C(C0, M_CcjC_C(Cv0[N3], Cqt0[N2 * N0 + N3]));
+    if(N0 < 5)
+        for(; N2 < N0; ++N2) {
+            N3 = N5;
+            N4 = N2 * N0 + N5;
 
-        C0 = M_CR_C(C0, 2.0);
+            for(C0 = C_R_C(0.0); N3 < N0; ++N3, ++N4)
+                C0 = A_CC_C(C0, M_CcjC_C(Cv0[N3], Cqt0[N4]));
 
-        for(N3 = N4; N3 < N0; ++N3)
-            Cqt0[N2 * N0 + N3] = S_CC_C(Cqt0[N2 * N0 + N3], M_CC_C(Cv0[N3], C0));
-    }
+            C0 = M_CR_C(A_CC_C(A_CC_C(C1, C2), A_CC_C(C3, C4)), 2.0);
+
+            for(N3 = N5, N4 = N2 * N0 + N5; N3 < N0; ++N3, ++N4)
+                Cqt0[N4] = S_CC_C(Cqt0[N4], M_CC_C(Cv0[N3], C0));
+        }
+    else
+        for(; N2 < N0; ++N2) {
+            N3 = N5;
+            N4 = N2 * N0 + N5;
+
+            C1 = M_CcjC_C(Cv0[N3], Cqt0[N4]);
+            C2 = M_CcjC_C(Cv0[N3 + 1], Cqt0[N4 + 1]);
+            C3 = M_CcjC_C(Cv0[N3 + 2], Cqt0[N4 + 2]);
+            C4 = M_CcjC_C(Cv0[N3 + 3], Cqt0[N4 + 3]);
+
+            N3 += 4;
+            N4 += 4;
+
+            for(; N3 + 3 < N0; N3 += 4, N4 += 4) {
+                C1 = A_CC_C(C1, M_CcjC_C(Cv0[N3], Cqt0[N4]));
+                C2 = A_CC_C(C2, M_CcjC_C(Cv0[N3 + 1], Cqt0[N4 + 1]));
+                C3 = A_CC_C(C3, M_CcjC_C(Cv0[N3 + 2], Cqt0[N4 + 2]));
+                C4 = A_CC_C(C4, M_CcjC_C(Cv0[N3 + 3], Cqt0[N4 + 3]));
+            }
+
+            for(; N3 < N0; ++N3, ++N4)
+                C1 = A_CC_C(C1, M_CcjC_C(Cv0[N3], Cqt0[N4]));
+
+            C0 = M_CR_C(A_CC_C(A_CC_C(C1, C2), A_CC_C(C3, C4)), 2.0);
+
+            for(N3 = N5, N4 = N2 * N0 + N5; N3 + 3 < N0; N3 += 4, N4 += 4) {
+                Cqt0[N4] = S_CC_C(Cqt0[N4], M_CC_C(Cv0[N3], C0));
+                Cqt0[N4 + 1] = S_CC_C(Cqt0[N4 + 1], M_CC_C(Cv0[N3 + 1], C0));
+                Cqt0[N4 + 2] = S_CC_C(Cqt0[N4 + 2], M_CC_C(Cv0[N3 + 2], C0));
+                Cqt0[N4 + 3] = S_CC_C(Cqt0[N4 + 3], M_CC_C(Cv0[N3 + 3], C0));
+            }
+
+            for(N3 = N5, N4 = N2 * N0 + N5; N3 < N0; ++N3, ++N4)
+                Cqt0[N4] = S_CC_C(Cqt0[N4], M_CC_C(Cv0[N3], C0));
+        }
 }
 
 /**
