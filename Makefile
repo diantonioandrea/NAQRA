@@ -5,6 +5,7 @@ CFLAGS += -DVERBOSE
 
 # Headers.
 HEADERS = ./include/*.h
+HEADERS += ./src/*.h
 
 # Executables.
 TESTS = $(subst src/,executables/,$(subst .c,.out,$(shell find src -name "Test_*.c")))
