@@ -4,7 +4,7 @@ _**N**eon **A**ccelerated **QR** **A**lgorithm_
 
 ## Introduction
 
-An implementation of the [_QR Algorithm_](https://en.wikipedia.org/wiki/QR_algorithm) utilizing [_Neon_](https://developer.arm.com/Architectures/Neon) intrinsics, written in `C23`.
+An implementation of the [_QR Algorithm_](https://en.wikipedia.org/wiki/QR_algorithm) with _Double Wilkinson's Shift_ utilizing [_Neon_](https://developer.arm.com/Architectures/Neon) intrinsics, written in `C23`.
 
 ## Table of Contents
 
