@@ -45,8 +45,8 @@ typedef float64x2_t Real2; // Real numbers (double).
 #define TOL1 1.0E-24
 #endif
 
-#ifndef IT0
-#define IT0 1E6
+#ifndef ITM0
+#define ITM0 1E6
 #endif
 
 
