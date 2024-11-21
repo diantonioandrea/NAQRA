@@ -153,14 +153,19 @@ void Hsn_CqtN_0(Complex* Cqt0, const Natural N0) {
 void Eig_ChsnqtN_0(Complex *Chsnqt0, const Natural N0) {
     register Natural N1 = 0, N2;
     register Real R0;
+    register Complex C0;
     register Complex* Cv0 = (Complex*) calloc(2 * (N0 - 1), sizeof(Complex));
 
     #ifdef VERBOSE
     printf("--- QR Algorithm\n");
     #endif
 
-    for(;; ++N1) {
-        for(N2 = 0; N2 < N0 - 1; ++N2) {
+    for(C0 = Chsnqt0[N0 * N0 - 1];; C0 = Chsnqt0[N0 * N0 - 1], ++N1) {
+
+        for(N2 = 0; N2 < N0; ++N2) // Shift.
+            Chsnqt0[N2 * (N0 + 1)] = S_CC_C(Chsnqt0[N2 * (N0 + 1)], C0);
+
+        for(N2 = 0; N2 < N0 - 1; ++N2) { // QR.
             Cv0[2 * N2] = Chsnqt0[N2 * (N0 + 1)];
             Cv0[2 * N2 + 1] = Chsnqt0[N2 * (N0 + 1) + 1];
 
@@ -169,8 +174,11 @@ void Eig_ChsnqtN_0(Complex *Chsnqt0, const Natural N0) {
             Gvl_CqtCCNNN_0(Chsnqt0, Cv0[2 * N2], Cv0[2 * N2 + 1], N0, N2, 1);
         }
 
-        for(N2 = 0; N2 < N0 - 1; ++N2)
+        for(N2 = 0; N2 < N0 - 1; ++N2) // RQ.
             Gvrtr_CqtCCNNN_0(Chsnqt0, Cv0[2 * N2], Cv0[2 * N2 + 1], N0, N2, 1);
+
+        for(N2 = 0; N2 < N0; ++N2) // Shift.
+            Chsnqt0[N2 * (N0 + 1)] = A_CC_C(Chsnqt0[N2 * (N0 + 1)], C0);
 
         for(R0 = 0.0, N2 = 0; N2 < N0 - 1; ++N2)
             R0 += N2_C_R(Chsnqt0[N2 * (N0 + 1) + 1]);
