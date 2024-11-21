@@ -30,7 +30,7 @@ void Hsn_CqtN_0(Complex*, const Natural);
 
 // QR algorithm.
 
-Complex EigC_CCCCC_C(const Complex, const Complex, const Complex, const Complex, const Complex);
+Complex EigC_CCCC_C(const Complex, const Complex, const Complex, const Complex);
 void Eig_ChsnqtN_0(Complex *, const Natural);
 
 // Output.
