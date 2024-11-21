@@ -9,7 +9,6 @@
  */
 
 #include "./Test.h"
-#include "../include/Matrix.h"
 
 int main(int argc, char **argv) {
     if(argc < 4) {
