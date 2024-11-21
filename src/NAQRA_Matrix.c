@@ -24,8 +24,7 @@
 void Hsl_CqtCvNN_0(Complex* Cqt0, const Complex* Cv0, const Natural N0, const Natural N1) {
     register Natural N2 = 0, N3, N4;
     const register Natural N5 = N0 - N1;
-
-    register Complex C0;
+    register Complex C0 = {0.0, 0.0};
 
     if(N0 < 5)
         for(; N2 < N0; ++N2) {
@@ -168,10 +167,10 @@ void Hsn_CqtN_0(Complex* Cqt0, const Natural N0) {
     register Complex* Cv1 = (Complex*) calloc(N0 - 2, sizeof(Complex)); // Zeros.
 
     for(; N1 < N0 - 2; ++N1) {
-        
-        // Householder vector.
 
         const register Natural N3 = N0 - N1 - 1; // Entries.
+        
+        // Householder vector.
 
         Cp_CvtCvN_0(Cv0 + N1 + 1, Cqt0 + N1 * (N0 + 1) + 1, N3); // Copy.
         Cv0[N1 + 1] = S_CC_C(Cv0[N1 + 1], M_CR_C(Nzd2_C_C(Cv0[N1 + 1]), N2_CvN_R(Cv0 + N1 + 1, N3))); // Direction.
@@ -194,15 +193,15 @@ void Hsn_CqtN_0(Complex* Cqt0, const Natural N0) {
 // QR algorithm.
 
 /**
- * @brief Closest Eigenvalue [EigC].
+ * @brief Eigenvalue [Eig].
  * 
  * @param C0 Complex Number [C], Matrix element.
  * @param C1 Complex Number [C], Matrix element.
  * @param C2 Complex Number [C], Matrix element.
- * @param C3 Complex Number [C], Matrix element, guess.
- * @return Complex Complex Number [C].
+ * @param C3 Complex Number [C], Matrix element.
+ * @return Complex* Complex Vector [Cv].
  */
-Complex EigC_CCCC_C(const Complex C0, const Complex C1, const Complex C2, const Complex C3) {
+[[nodiscard]] Complex* Eig_CCCC_C(const Complex C0, const Complex C1, const Complex C2, const Complex C3) {
     const register Complex C4 = A_CC_C(C0, C3);
     const register Complex C5 = S_CC_C(M_CC_C(C0, C3), M_CC_C(C1, C2));
     const register Complex C6 = S_CC_C(Sq_C_C(C4), M_CR_C(C5, 4.0));
@@ -210,15 +209,10 @@ Complex EigC_CCCC_C(const Complex C0, const Complex C1, const Complex C2, const 
 
     register Complex* Cv0 = Nrt_C_Cv(C6, 2);
 
-    const register Complex C8 = A_CC_C(C7, D_CR_C(Cv0[0], 2.0));
-    const register Complex C9 = A_CC_C(C7, D_CR_C(Cv0[1], 2.0));
+    Cv0[0] = A_CC_C(C7, D_CR_C(Cv0[0], 2.0));
+    Cv0[1] = A_CC_C(C7, D_CR_C(Cv0[1], 2.0));
 
-    free(Cv0);
-
-    if(N2_C_R(S_CC_C(C8, C4)) < N2_C_R(S_CC_C(C9, C4)))
-        return C8;
-
-    return C9;
+    return Cv0;
 }
 
 /**
@@ -229,9 +223,9 @@ Complex EigC_CCCC_C(const Complex C0, const Complex C1, const Complex C2, const 
  */
 void Eig_ChsnqtN_0(Complex *Chsnqt0, const Natural N0) {
     register Complex* Cv0 = (Complex*) calloc(2 * (N0 - 1), sizeof(Complex));
+    register Complex* Cv1 = (Complex*) calloc(2, sizeof(Complex));
 
-    register Natural N1 = 0, N2, N3 = N0 - 1;
-    register Complex C0;
+    register Natural N1 = 0, N2, N3 = N0 - 1, N4;
     register Real R0;
 
     #ifdef VERBOSE
@@ -243,31 +237,33 @@ void Eig_ChsnqtN_0(Complex *Chsnqt0, const Natural N0) {
         if(N3 == 0) break; // Stop.
         if(N2_C_R(Chsnqt0[(N3 - 1) * (N0 + 1) + 1]) <= TOL0) { --N3; continue; } // Deflation.
 
-        // C0 = EigC_CCCC_C(Chsnqt0[(N3 - 1) * (N0 + 1)], Chsnqt0[N3 * N0 + N3 - 1], Chsnqt0[(N3 - 1) * (N0 + 1) + 1], Chsnqt0[N3 * (N0 + 1)]); // Wilkinson's shift.
-        C0 = Chsnqt0[N3 * (N0 + 1)]; // Simple shift.
+        *Cv1 = *Eig_CCCC_C(Chsnqt0[(N3 - 1) * (N0 + 1)], Chsnqt0[N3 * N0 + N3 - 1], Chsnqt0[(N3 - 1) * (N0 + 1) + 1], Chsnqt0[N3 * (N0 + 1)]); // Double Wilkinson's shift.
 
-        for(N2 = 0; N2 < N3 + 1; ++N2) // Shift.
-            Chsnqt0[N2 * (N0 + 1)] = S_CC_C(Chsnqt0[N2 * (N0 + 1)], C0);
+        for(N4 = 0; N4 < 2; ++N4) { // Double shift.
 
-        for(N2 = 0; N2 < N3; ++N2) { // QR.
-            Cp_CvtCvN_0(Cv0 + 2 * N2, Chsnqt0 + N2 * (N0 + 1), 2); // Copy.
+            for(N2 = 0; N2 < N3 + 1; ++N2) // Shift (-).
+                Chsnqt0[N2 * (N0 + 1)] = S_CC_C(Chsnqt0[N2 * (N0 + 1)], Cv1[N4]);
 
-            R0 = N2_CvN_R(Cv0 + 2 * N2, 2); // Norm.
-            D_CvR_0(Cv0 + 2 * N2, R0, 2); // Normalization.
+            for(N2 = 0; N2 < N3; ++N2) { // QR.
+                Cp_CvtCvN_0(Cv0 + 2 * N2, Chsnqt0 + N2 * (N0 + 1), 2); // Copy.
 
-            // First product.
-            Chsnqt0[N2 * (N0 + 1)] = C_R_C(R0);
-            Chsnqt0[N2 * (N0 + 1) + 1] = C_R_C(0.0);
+                R0 = N2_CvN_R(Cv0 + 2 * N2, 2); // Norm.
+                D_CvR_0(Cv0 + 2 * N2, R0, 2); // Normalization.
 
-            // Other products.
-            Gvl_ChsnqtCCNN_0(Chsnqt0, Cv0[2 * N2], Cv0[2 * N2 + 1], N0, N2);
+                // First product.
+                Chsnqt0[N2 * (N0 + 1)] = C_R_C(R0);
+                Chsnqt0[N2 * (N0 + 1) + 1] = C_R_C(0.0);
+
+                // Other products.
+                Gvl_ChsnqtCCNN_0(Chsnqt0, Cv0[2 * N2], Cv0[2 * N2 + 1], N0, N2);
+            }
+
+            for(N2 = 0; N2 < N3; ++N2) // RQ.
+                Gvrhr_ChsnqtCCNN_0(Chsnqt0, Cv0[2 * N2], Cv0[2 * N2 + 1], N0, N2);
+
+            for(N2 = 0; N2 < N3 + 1; ++N2) // Shift (+).
+                Chsnqt0[N2 * (N0 + 1)] = A_CC_C(Chsnqt0[N2 * (N0 + 1)], Cv1[N4]);
         }
-
-        for(N2 = 0; N2 < N3; ++N2) // RQ.
-            Gvrhr_ChsnqtCCNN_0(Chsnqt0, Cv0[2 * N2], Cv0[2 * N2 + 1], N0, N2);
-
-        for(N2 = 0; N2 < N3 + 1; ++N2) // Shift.
-            Chsnqt0[N2 * (N0 + 1)] = A_CC_C(Chsnqt0[N2 * (N0 + 1)], C0);
     }
 
     #ifdef VERBOSE
@@ -276,6 +272,7 @@ void Eig_ChsnqtN_0(Complex *Chsnqt0, const Natural N0) {
     #endif
 
     free(Cv0);
+    free(Cv1);
 }
 
 // Output.
