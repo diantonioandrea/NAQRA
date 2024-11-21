@@ -25,6 +25,52 @@ void Cp_CvtCvN_0(Complex* Cvt0, const Complex* Cv0, Natural N0) {
     memcpy(Cvt0, Cv0, N0 * sizeof(Complex));
 }
 
+// Complex-Real arithmetic.
+
+/**
+ * @brief Multiply [M].
+ * 
+ * @param Cvt0 Complex Vector [Cv], Target [t].
+ * @param R0 Real Number [R].
+ * @param N0 Entries [N].
+ */
+void M_CvR_0(Complex* Cvt0, const Real R0, const Natural N0) {
+    register Natural N1 = 0;
+    const register Real2 Rt0 = vdupq_n_f64(R0);
+
+    for(; N1 + 3 < N0; N1 += 4) {
+        Cvt0[N1] = vmulq_f64(Cvt0[N1], Rt0);
+        Cvt0[N1 + 1] = vmulq_f64(Cvt0[N1 + 1], Rt0);
+        Cvt0[N1 + 2] = vmulq_f64(Cvt0[N1 + 2], Rt0);
+        Cvt0[N1 + 3] = vmulq_f64(Cvt0[N1 + 3], Rt0);
+    }
+
+    for(; N1 < N0; ++N1)
+        Cvt0[N1] = vmulq_f64(Cvt0[N1], Rt0);
+}
+
+/**
+ * @brief Divide [D].
+ * 
+ * @param Cvt0 Complex Vector [Cv], Target [t].
+ * @param R0 Real Number [R].
+ * @param N0 Entries [N].
+ */
+void D_CvR_0(Complex* Cvt0, const Real R0, const Natural N0) {
+    register Natural N1 = 0;
+    const register Real2 Rt0 = vdupq_n_f64(R0);
+
+    for(; N1 + 3 < N0; N1 += 4) {
+        Cvt0[N1] = vdivq_f64(Cvt0[N1], Rt0);
+        Cvt0[N1 + 1] = vdivq_f64(Cvt0[N1 + 1], Rt0);
+        Cvt0[N1 + 2] = vdivq_f64(Cvt0[N1 + 2], Rt0);
+        Cvt0[N1 + 3] = vdivq_f64(Cvt0[N1 + 3], Rt0);
+    }
+
+    for(; N1 < N0; ++N1)
+        Cvt0[N1] = vdivq_f64(Cvt0[N1], Rt0);
+}
+
 // Dot product.
 
 /**
@@ -33,7 +79,7 @@ void Cp_CvtCvN_0(Complex* Cvt0, const Complex* Cv0, Natural N0) {
  * @param Crv0 Complex Row Vector [Crv].
  * @param Ccv0 Complex Column Vector [Ccv].
  * @param N0 Entries [N].
- * @return Complex Complex [C].
+ * @return Complex Complex Number [C].
  */
 Complex Dot_CrvCcvN_C(const Complex* Crv0, const Complex* Ccv0, const Natural N0) {
     register Natural N1 = 0;
@@ -63,7 +109,7 @@ Complex Dot_CrvCcvN_C(const Complex* Crv0, const Complex* Ccv0, const Natural N0
  * 
  * @param Cv0 Complex Vector [Cv].
  * @param N0 Entries [N].
- * @return Real Real [R].
+ * @return Real Real Number [R].
  */
 Real N2_CvN_R(const Complex* Cv0, const Natural N0) {
     register Natural N1 = 0;
@@ -92,20 +138,7 @@ Real N2_CvN_R(const Complex* Cv0, const Natural N0) {
  * @param Cvt0 Cv0 Complex Vector [Cv], Target [t].
  * @param N0 Entries [N].
  */
-void Nz2_CvN_0(Complex* Cvt0, const Natural N0) {
-    register Natural N1 = 0;
-    const register Real2 Rt0 = vdupq_n_f64(N2_CvN_R(Cvt0, N0));
-
-    for(; N1 + 3 < N0; N1 += 4) {
-        Cvt0[N1] = vdivq_f64(Cvt0[N1], Rt0);
-        Cvt0[N1 + 1] = vdivq_f64(Cvt0[N1 + 1], Rt0);
-        Cvt0[N1 + 2] = vdivq_f64(Cvt0[N1 + 2], Rt0);
-        Cvt0[N1 + 3] = vdivq_f64(Cvt0[N1 + 3], Rt0);
-    }
-
-    for(; N1 < N0; ++N1)
-        Cvt0[N1] = vdivq_f64(Cvt0[N1], Rt0);
-}
+void Nz2_CvN_0(Complex* Cvt0, const Natural N0) { const register Real R0 = N2_CvN_R(Cvt0, N0); D_CvR_0(Cvt0, R0, N0); }
 
 // Output.
 
