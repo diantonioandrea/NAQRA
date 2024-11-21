@@ -159,7 +159,7 @@ void Eig_ChsnqtN_0(Complex *Chsnqt0, const Natural N0) {
     printf("--- QR Algorithm\n");
     #endif
 
-    for(;; C0 = Chsnqt0[N3 * (N0 + 1)], ++N1) {
+    for(; N1 < IT0; C0 = Chsnqt0[N3 * (N0 + 1)], ++N1) {
 
         if(N3 == 0) break; // Stop.
         if(N2_C_R(Chsnqt0[(N3 - 1) * (N0 + 1) + 1]) <= TOL0) { --N3; continue; } // Deflation.
