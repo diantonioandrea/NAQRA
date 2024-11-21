@@ -194,6 +194,37 @@ void Hsn_CqtN_0(Complex* Cqt0, const Natural N0) {
 // QR algorithm.
 
 /**
+ * @brief Closest Eigenvalue [EigC].
+ * 
+ * @param C0 Complex Number [C], Matrix element.
+ * @param C1 Complex Number [C], Matrix element.
+ * @param C2 Complex Number [C], Matrix element.
+ * @param C3 Complex Number [C], Matrix element.
+ * @param C4 Complex Number [C], Guess.
+ * @return Complex Complex Number [C].
+ */
+Complex EigC_CCCCC_C(const Complex C0, const Complex C1, const Complex C2, const Complex C3, const Complex C4) {
+    const register Complex C5 = A_CC_C(C0, C3);
+    const register Complex C6 = S_CC_C(M_CC_C(C0, C3), M_CC_C(C1, C2));
+    const register Complex C7 = S_CC_C(Sq_C_C(C5), M_CR_C(C6, 4.0));
+    const register Complex C8 = D_CR_C(C5, 2.0);
+    register Complex* Cv0 = Nrt_C_Cv(C7, 2);
+
+    const register Complex C9 = A_CC_C(C8, D_CR_C(Cv0[0], 2.0));
+    const register Complex C10 = A_CC_C(C8, D_CR_C(Cv0[1], 2.0));
+
+    Pn_C_0(C9);
+    Pn_C_0(C10);
+
+    free(Cv0);
+
+    if(N2_C_R(S_CC_C(C9, C4)) < N2_C_R(S_CC_C(C10, C4)))
+        return C9;
+
+    return C10;
+}
+
+/**
  * @brief Eigenvalues [Eig].
  * 
  * @param Chsnqt0 Complex Hessenberg Square Matrix [Chsnq], Target [t].
