@@ -11,13 +11,16 @@
 #ifndef NAQRA_COMPLEX_H
 #define NAQRA_COMPLEX_H
 
-// Types.
+// Base.
 #include <stddef.h>
-
-// Output.
+#include <stdlib.h>
 #include <stdio.h>
 
 // Math.
+#ifndef _USE_MATH_DEFINES
+#define _USE_MATH_DEFINES
+#endif
+
 #include <math.h>
 
 // Neon.
@@ -99,6 +102,28 @@ static inline Complex D_CR_C(const Complex C0, const Real R0) { return vdivq_f64
 // Complex methods.
 
 static inline Complex Cj_C_C(const Complex C0) { return vsetq_lane_f64(-vgetq_lane_f64(C0, 1), C0, 1); }
+
+static inline Complex Sq_C_C(const Complex C0) {
+    const register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
+
+    Complex C2 = {R0 * R0 - R1 * R1, 2.0 * R0 * R1}; return C2;
+}
+
+[[nodiscard]] static inline Complex* Nrt_C_Cv(const Complex C0, const Natural N0) {
+    register Natural N1 = 0;
+    register Complex* Cv0 = (Complex*) calloc(N0, sizeof(Complex));
+
+    const register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
+    const register Real R2 = 2.0 * M_PI / (Real) N0;
+
+    register Real R3 = R0 * R0 + R1 * R1; R3 = pow(R3, 0.5 / (Real) N0);
+    register Real R4 = atan2(R1, R0); if(R4 < 0.0) R4 += M_PI; R4 /= (Real) N0;
+
+    for(; N1 < N0; ++N1, R4 += R2)
+        Cv0[N1] = C_RR_C(R3 * cos(R4), R3 * sin(R4));
+
+    return Cv0;
+}
 
 // Norms.
 
