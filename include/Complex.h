@@ -46,7 +46,7 @@ typedef float64x2_t Real2; // Real numbers (double).
 #endif
 
 #ifndef IT0
-#define IT0 1E2
+#define IT0 1E5
 #endif
 
 
