@@ -120,23 +120,28 @@ void Gvrhr_CqtCCNNN_0(Complex* Cqt0, const Complex C0, const Complex C1, const N
  * @param N0 Rows and Columns [N].
  */
 void Hsn_CqtN_0(Complex* Cqt0, const Natural N0) {
-    register Natural N1 = 0;
+    register Natural N1 = 0, N2;
     register Complex* Cv0 = (Complex*) calloc(N0, sizeof(Complex));
 
     for(; N1 < N0 - 2; ++N1) {
         
         // Householder vector.
 
-        const register Natural N2 = N0 - N1 - 1; // Entries.
+        const register Natural N3 = N0 - N1 - 1; // Entries.
 
-        Cp_CvtCvN_0(Cv0 + N1 + 1, Cqt0 + N1 * (N0 + 1) + 1, N2); // Copy.
-        Cv0[N1 + 1] = S_CC_C(Cv0[N1 + 1], M_CR_C(Nzd2_C_C(Cv0[N1 + 1]), N2_CvN_R(Cv0 + N1 + 1, N2))); // Direction.
-        Nz2_CvN_0(Cv0 + N1 + 1, N2); // Normalization.
+        Cp_CvtCvN_0(Cv0 + N1 + 1, Cqt0 + N1 * (N0 + 1) + 1, N3); // Copy.
+        Cv0[N1 + 1] = S_CC_C(Cv0[N1 + 1], M_CR_C(Nzd2_C_C(Cv0[N1 + 1]), N2_CvN_R(Cv0 + N1 + 1, N3))); // Direction.
+        Nz2_CvN_0(Cv0 + N1 + 1, N3); // Normalization.
 
         // Householder products.
 
-        Hsl_CqtCvNN_0(Cqt0, Cv0, N0, N2);
-        Hsr_CqtCvNN_0(Cqt0, Cv0, N0, N2);
+        Hsl_CqtCvNN_0(Cqt0, Cv0, N0, N3);
+        Hsr_CqtCvNN_0(Cqt0, Cv0, N0, N3);
+
+        // Zeroing.
+
+        for(N2 = N1 + 2; N2 < N0; ++N2)
+            Cqt0[N1 * N0 + N2] = C_R_C(0.0);
     }
 
     free(Cv0);
@@ -159,7 +164,7 @@ void Eig_ChsnqtN_0(Complex *Chsnqt0, const Natural N0) {
     printf("--- QR Algorithm\n");
     #endif
 
-    for(; N1 < IT0; C0 = Chsnqt0[N3 * (N0 + 1)], ++N1) {
+    for(; N1 < ITM0; C0 = Chsnqt0[N3 * (N0 + 1)], ++N1) {
 
         if(N3 == 0) break; // Stop.
         if(N2_C_R(Chsnqt0[(N3 - 1) * (N0 + 1) + 1]) <= TOL0) { --N3; continue; } // Deflation.
