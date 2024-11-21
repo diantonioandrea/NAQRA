@@ -161,14 +161,15 @@ void Eig_ChsnqtN_0(Complex *Chsnqt0, const Natural N0) {
 
     for(;; C0 = Chsnqt0[N3 * (N0 + 1)], ++N1) {
 
+        if(N3 == 0) break; // Stop.
+        if(N2_C_R(Chsnqt0[(N3 - 1) * (N0 + 1) + 1]) <= TOL0) { --N3; continue; } // Deflation.
+
         for(N2 = 0; N2 < N3 + 1; ++N2) // Shift.
             Chsnqt0[N2 * (N0 + 1)] = S_CC_C(Chsnqt0[N2 * (N0 + 1)], C0);
 
         for(N2 = 0; N2 < N3; ++N2) { // QR.
-            Cv0[2 * N2] = Chsnqt0[N2 * (N0 + 1)];
-            Cv0[2 * N2 + 1] = Chsnqt0[N2 * (N0 + 1) + 1];
-
-            Nz2_CvN_0(Cv0 + 2 * N2, 2);
+            Cp_CvtCvN_0(Cv0 + 2 * N2, Chsnqt0 + N2 * (N0 + 1), 2); // Copy.
+            Nz2_CvN_0(Cv0 + 2 * N2, 2); // Normalization.
 
             Gvl_CqtCCNNN_0(Chsnqt0, Cv0[2 * N2], Cv0[2 * N2 + 1], N0, N2, 1);
         }
@@ -178,9 +179,6 @@ void Eig_ChsnqtN_0(Complex *Chsnqt0, const Natural N0) {
 
         for(N2 = 0; N2 < N3 + 1; ++N2) // Shift.
             Chsnqt0[N2 * (N0 + 1)] = A_CC_C(Chsnqt0[N2 * (N0 + 1)], C0);
-
-        if(N2_C_R(Chsnqt0[(N3 - 1) * (N0 + 1) + 1]) <= TOL0) --N3; // Deflation.
-        if(N3 == 0) break; // Stop.
     }
 
     #ifdef VERBOSE
