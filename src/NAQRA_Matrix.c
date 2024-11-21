@@ -26,10 +26,6 @@ void Hsl_CqtCvNN_0(Complex* Cqt0, const Complex* Cv0, const Natural N0, const Na
     const register Natural N5 = N0 - N1;
 
     register Complex C0;
-    register Complex C1 = {0.0, 0.0};
-    register Complex C2 = {0.0, 0.0};
-    register Complex C3 = {0.0, 0.0};
-    register Complex C4 = {0.0, 0.0};
 
     if(N0 < 5)
         for(; N2 < N0; ++N2) {
@@ -39,12 +35,17 @@ void Hsl_CqtCvNN_0(Complex* Cqt0, const Complex* Cv0, const Natural N0, const Na
             for(C0 = C_R_C(0.0); N3 < N0; ++N3, ++N4)
                 C0 = A_CC_C(C0, M_CcjC_C(Cv0[N3], Cqt0[N4]));
 
-            C0 = M_CR_C(A_CC_C(A_CC_C(C1, C2), A_CC_C(C3, C4)), 2.0);
+            C0 = M_CR_C(C0, 2.0);
 
             for(N3 = N5, N4 = N2 * N0 + N5; N3 < N0; ++N3, ++N4)
                 Cqt0[N4] = S_CC_C(Cqt0[N4], M_CC_C(Cv0[N3], C0));
         }
-    else
+    else {
+        register Complex C1 = {0.0, 0.0};
+        register Complex C2 = {0.0, 0.0};
+        register Complex C3 = {0.0, 0.0};
+        register Complex C4 = {0.0, 0.0};
+
         for(; N2 < N0; ++N2) {
             N3 = N5;
             N4 = N2 * N0 + N5;
@@ -79,6 +80,7 @@ void Hsl_CqtCvNN_0(Complex* Cqt0, const Complex* Cv0, const Natural N0, const Na
             for(N3 = N5, N4 = N2 * N0 + N5; N3 < N0; ++N3, ++N4)
                 Cqt0[N4] = S_CC_C(Cqt0[N4], M_CC_C(Cv0[N3], C0));
         }
+    }
 }
 
 /**
