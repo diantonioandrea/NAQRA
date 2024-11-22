@@ -55,14 +55,50 @@ typedef float64x2_t Real2; // Real numbers (double).
 
 // Complex "constructors".
 
+/**
+ * @brief Construct [C].
+ * 
+ * @param R0 Real Number [N].
+ * @return Complex Complex Number [C].
+ */
 static inline Complex C_R_C(const Real R0) { Complex C0 = {R0, 0.0}; return C0; }
+
+/**
+ * @brief Construct [C].
+ * 
+ * @param R0 Real Number [N].
+ * @param R1 Real Number [N].
+ * @return Complex Complex Number [C].
+ */
 static inline Complex C_RR_C(const Real R0, const Real R1) { Complex C0 = {R0, R1}; return C0; }
 
 // Complex-Complex arithmetic.
 
+/**
+ * @brief Add [A].
+ * 
+ * @param C0 Complex Number [C].
+ * @param C1 Complex Number [C].
+ * @return Complex Complex Number [C].
+ */
 static inline Complex A_CC_C(const Complex C0, const Complex C1) { return vaddq_f64(C0, C1); }
+
+/**
+ * @brief Subtract [S].
+ * 
+ * @param C0 Complex Number [C].
+ * @param C1 Complex Number [C].
+ * @return Complex Complex Number [C].
+ */
 static inline Complex S_CC_C(const Complex C0, const Complex C1) { return vsubq_f64(C0, C1); }
 
+/**
+ * @brief Multiply [M].
+ * 
+ * @param C0 Complex Number [C].
+ * @param C1 Complex Number [C].
+ * @return Complex Complex Number [C].
+ */
 static inline Complex M_CC_C(const Complex C0, const Complex C1) {
     const register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
     const register Real R2 = vgetq_lane_f64(C1, 0), R3 = vgetq_lane_f64(C1, 1); // C1.
@@ -70,6 +106,13 @@ static inline Complex M_CC_C(const Complex C0, const Complex C1) {
     Complex C2 = {R0 * R2 - R1 * R3, R0 * R3 + R1 * R2}; return C2;
 }
 
+/**
+ * @brief Multiply [M].
+ * 
+ * @param C0 Complex Number [C].
+ * @param C1 Conjugate Complex Number [Ccj].
+ * @return Complex Complex Number [C].
+ */
 static inline Complex M_CCcj_C(const Complex C0, const Complex C1) {
     const register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
     const register Real R2 = vgetq_lane_f64(C1, 0), R3 = vgetq_lane_f64(C1, 1); // C1.
@@ -77,6 +120,13 @@ static inline Complex M_CCcj_C(const Complex C0, const Complex C1) {
     Complex C2 = {R0 * R2 + R1 * R3, R1 * R2 - R0 * R3}; return C2;
 }
 
+/**
+ * @brief Multiply [M].
+ * 
+ * @param C0 Conjugate Complex Number [Ccj].
+ * @param C1 Complex Number [C].
+ * @return Complex Complex Number [C].
+ */
 static inline Complex M_CcjC_C(const Complex C0, const Complex C1) {
     const register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
     const register Real R2 = vgetq_lane_f64(C1, 0), R3 = vgetq_lane_f64(C1, 1); // C1.
@@ -84,6 +134,13 @@ static inline Complex M_CcjC_C(const Complex C0, const Complex C1) {
     Complex C2 = {R0 * R2 + R1 * R3, R0 * R3 - R1 * R2}; return C2;
 }
 
+/**
+ * @brief Divide [D].
+ * 
+ * @param C0 Complex Number [C].
+ * @param C1 Complex Number [C].
+ * @return Complex Complex Number [C].
+ */
 static inline Complex D_CC_C(const Complex C0, const Complex C1) {
     const register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
     const register Real R2 = vgetq_lane_f64(C1, 0), R3 = vgetq_lane_f64(C1, 1); // C1.
@@ -94,21 +151,71 @@ static inline Complex D_CC_C(const Complex C0, const Complex C1) {
 
 // Complex-Real arithmetic.
 
+/**
+ * @brief Add [A].
+ * 
+ * @param C0 Complex Number [C].
+ * @param R0 Real Number [R].
+ * @return Complex Complex Number [C].
+ */
 static inline Complex A_CR_C(const Complex C0, const Real R1) { const register Complex C1 = {R1, 0.0}; return vaddq_f64(C0, C1); }
+
+/**
+ * @brief Subtract [S].
+ * 
+ * @param C0 Complex Number [C].
+ * @param R0 Real Number [R].
+ * @return Complex Complex Number [C].
+ */
 static inline Complex S_CR_C(const Complex C0, const Real R1) { const register Complex C1 = {R1, 0.0}; return vsubq_f64(C0, C1); }
+
+/**
+ * @brief Multiply [M].
+ * 
+ * @param C0 Complex Number [C].
+ * @param R0 Real Number [R].
+ * @return Complex Complex Number [C].
+ */
 static inline Complex M_CR_C(const Complex C0, const Real R0) { return vmulq_f64(C0, vdupq_n_f64(R0)); }
+
+/**
+ * @brief Divide [D].
+ * 
+ * @param C0 Complex Number [C].
+ * @param R0 Real Number [R].
+ * @return Complex Complex Number [C].
+ */
 static inline Complex D_CR_C(const Complex C0, const Real R0) { return vdivq_f64(C0, vdupq_n_f64(R0)); }
 
 // Complex methods.
 
+/**
+ * @brief Conjugate [A].
+ * 
+ * @param C0 Complex Number [C].
+ * @return Complex Complex Number [C].
+ */
 static inline Complex Cj_C_C(const Complex C0) { return vsetq_lane_f64(-vgetq_lane_f64(C0, 1), C0, 1); }
 
+/**
+ * @brief Square [Sq].
+ * 
+ * @param C0 Complex Number [C].
+ * @return Complex Complex Number [C].
+ */
 static inline Complex Sq_C_C(const Complex C0) {
     const register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
 
     Complex C2 = {R0 * R0 - R1 * R1, 2.0 * R0 * R1}; return C2;
 }
 
+/**
+ * @brief N-th Roots [Nrt].
+ * 
+ * @param C0 Complex Number [C].
+ * @param N0 Natural Number [N].
+ * @return Complex* Complex Vector [Cv].
+ */
 [[nodiscard]] static inline Complex* Nrt_C_Cv(const Complex C0, const Natural N0) {
     register Natural N1 = 0;
     register Complex* Cv0 = (Complex*) calloc(N0, sizeof(Complex));
@@ -127,8 +234,20 @@ static inline Complex Sq_C_C(const Complex C0) {
 
 // Norms.
 
+/**
+ * @brief Norm2 [N2].
+ * 
+ * @param C0 Complex Number [N].
+ * @return Real Real Number [R].
+ */
 static inline Real N2_C_R(const Complex C0) { const register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); return sqrt(R0 * R0 + R1 * R1); }
 
+/**
+ * @brief Normalized 2 [Nzd2].
+ * 
+ * @param C0 Complex Number [N].
+ * @return Complex Complex Number [C].
+ */
 static inline Complex Nzd2_C_C(const Complex C0) {
     const register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); 
     return vdivq_f64(C0, vdupq_n_f64(sqrt(R0 * R0 + R1 * R1)));
@@ -136,6 +255,11 @@ static inline Complex Nzd2_C_C(const Complex C0) {
 
 // Output.
 
+/**
+ * @brief Print [P].
+ * 
+ * @param C0 Complex Number [C].
+ */
 static inline void P_C_0(const Complex C0) { 
     const register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
 
@@ -146,6 +270,11 @@ static inline void P_C_0(const Complex C0) {
     else { if(fabs(R1) <= TOL0) printf("\x1b[2m"); if(R1 >= 0.0) printf("+"); printf("%.2ei ", R1); printf("\033[0m"); }
 }
 
+/**
+ * @brief Print with new line [Pn].
+ * 
+ * @param C0 Complex Number [C].
+ */
 static inline void Pn_C_0(const Complex C0) { P_C_0(C0); printf("\n"); }
 
 #endif
