@@ -32,4 +32,4 @@ Every method developed in **NAQRA** follows a structured naming convention with 
 2. **Input(s)**: Specifies the type or nature of the inputs.
 3. **Output**: Indicates the type or nature of the resulting output.
 
-Non-trivial methods are documented directly within the code for clarity and ease of use.
+All methods are documented directly within the code for clarity and ease of use.
