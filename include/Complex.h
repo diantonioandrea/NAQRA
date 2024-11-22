@@ -34,21 +34,27 @@ typedef ptrdiff_t Integer; // Integer numbers.
 typedef float64_t Real; // Real numbers.
 typedef float64x2_t Complex; // Complex numbers.
 
-typedef float64x1_t Real1; // Real numbers (singlet).
-typedef float64x2_t Real2; // Real numbers (double).
+typedef float64x1_t Real1; // Real numbers (unit).
+typedef float64x2_t Real2; // Real numbers (pair).
 
 
 // Constants.
 
 #ifndef TOL0
+
+// Almost zero numbers.
 #define TOL0 1.0E-12
 #endif
 
 #ifndef TOL1
+
+// Definitely zero numbers.
 #define TOL1 1.0E-24
 #endif
 
 #ifndef ITM0
+
+// Maximum number of iterations.
 #define ITM0 1E6
 #endif
 
