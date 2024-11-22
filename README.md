@@ -24,6 +24,16 @@ Clone the repository from [here](https://github.com/diantonioandrea/NAQRA):
 git clone git@github.com:diantonioandrea/NAQRA.git
 ```
 
+### Compiling the Tests
+
+Compile the tests located under `src/`:
+
+```bash
+make
+```
+
+The executables are then located under `executables/`.
+
 ## Usage
 
 Every method developed in **NAQRA** follows a structured naming convention with three parts, separated by underscores:
