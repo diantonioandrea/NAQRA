@@ -20,7 +20,7 @@
 #include "./Matrix.h"
 
 
-// Vector structure.
+// Vectors.
 
 // Complex vector.
 typedef struct {
@@ -54,8 +54,43 @@ typedef struct {
     return V0;
 }
 
+/**
+ * @brief Vector getter.
+ * 
+ * @param vector Vector.
+ * @param index Index.
+ * @return Complex Complex number.
+ */
+static inline Complex GetVectorAt(const Vector* vector, const Natural index) {
+    const register Natural N0 = index;
 
-// Matrix structure.
+    #ifndef NDEBUG // Integrity.
+    assert(N0 < vector->N0);
+    #endif
+
+    return vector->Cv0[N0];
+}
+
+/**
+ * @brief Vector setter.
+ * 
+ * @param vector Vector.
+ * @param index Index.
+ * @param complex Complex number.
+ */
+static inline void SetVectorAt(Vector* vector, const Natural index, const Complex complex) {
+    const register Natural N0 = index;
+    const register Complex C0 = complex;
+
+    #ifndef NDEBUG // Integrity.
+    assert(N0 < vector->N0);
+    #endif
+
+    vector->Cv0[N0] = complex;
+}
+
+
+// Matrices.
 
 // Complex matrix.
 typedef struct {
@@ -79,13 +114,13 @@ typedef struct {
  * @return Matrix* Matrix.
  */
 [[nodiscard]] static inline Matrix* NewMatrix(const Natural rows, const Natural columns) {
-    #ifndef NDEBUG // Integrity.
-    assert(rows > 0);
-    assert(columns > 0);
-    #endif
-
     const register Natural N0 = rows;
     const register Natural N1 = columns;
+
+    #ifndef NDEBUG // Integrity.
+    assert(N0 > 0);
+    assert(N1 > 0);
+    #endif
 
     Matrix* M0 = (Matrix*) malloc(sizeof(Matrix));
 
@@ -94,6 +129,47 @@ typedef struct {
     M0->N1 = N1;
 
     return M0;
+}
+
+/**
+ * @brief Matrix getter.
+ * 
+ * @param matrix Matrix.
+ * @param row Row index.
+ * @param column Column index.
+ * @return Complex Complex number.
+ */
+static inline Complex GetMatrixAt(const Matrix* matrix, const Natural row, const Natural column) {
+    const register Natural N0 = row;
+    const register Natural N1 = column;
+
+    #ifndef NDEBUG // Integrity.
+    assert(N0 > 0);
+    assert(N1 > 0);
+    #endif
+
+    return matrix->Cm0[N1 * matrix->N0 + N0];
+}
+
+/**
+ * @brief Matrix setter.
+ * 
+ * @param matrix Matrix.
+ * @param row Row index.
+ * @param column Column index.
+ * @param complex Complex number.
+ */
+static inline void SetMatrixAt(Matrix* matrix, const Natural row, const Natural column, const Complex complex) {
+    const register Natural N0 = row;
+    const register Natural N1 = column;
+    const register Complex C0 = complex;
+
+    #ifndef NDEBUG // Integrity.
+    assert(N0 > 0);
+    assert(N1 > 0);
+    #endif
+
+    matrix->Cm0[N1 * matrix->N0 + N0] = complex;
 }
 
 
