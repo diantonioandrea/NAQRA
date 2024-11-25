@@ -101,4 +101,11 @@ typedef struct {
 
 [[nodiscard]] Vector* Eigenvalues(const Matrix*);
 
+
+// Output.
+
+inline void PrintRowVector(const Vector* vector) { Pn_CrvN_0(vector->Cv0, vector->N0); }
+inline void PrintColumnVector(const Vector* vector) { Pn_CcvN_0(vector->Cv0, vector->N0); }
+inline void PrintMatrix(const Matrix* matrix) { Pn_CmNN_0(matrix->Cm0, matrix->N0, matrix->N1); }
+
 #endif
