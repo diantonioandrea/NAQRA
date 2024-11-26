@@ -48,4 +48,4 @@ All methods are documented directly within the code for clarity and ease of use.
 
 ### Interface
 
-Moreover, the repository provides an interface that includes the `Vector` and `Matrix` structures, some output methods, and the `Eigenvalues` function for higher-level usage. Vectors can be created, accessed, and edited using the `NewVector`, `GetVectorAt`, and `SetVectorAt` methods. Similarly, matrices can be manipulated with methods whose name follows the same conventions.
+Moreover, the repository provides an interface that includes the `Vector` and `Matrix` structures, some output methods, and the `Eigenvalues` function for higher-level usage. Vectors can be created, accessed, edited and deleted using the `NewVector`, `GetVectorAt`, `SetVectorAt`, and `FreeVector` methods. Similarly, matrices can be manipulated with methods whose name follows the same conventions.
