@@ -57,7 +57,7 @@ typedef struct {
  * @return Vector* Vector.
  */
 [[nodiscard]] static inline Vector* NewVector(const Natural size) {
-    #ifndef NDEBUG // Integrity.
+    #ifndef NDEBUG // Integrity check.
     assert(size > 0);
     #endif
 
@@ -91,7 +91,7 @@ static inline void FreeVector(Vector* vector) {
 static inline Complex GetVectorAt(const Vector* vector, const Natural index) {
     const register Natural N0 = index;
 
-    #ifndef NDEBUG // Integrity.
+    #ifndef NDEBUG // Integrity check.
     assert(N0 < vector->N0);
     #endif
 
@@ -109,7 +109,7 @@ static inline void SetVectorAt(Vector* vector, const Natural index, const Comple
     const register Natural N0 = index;
     const register Complex C0 = complex;
 
-    #ifndef NDEBUG // Integrity.
+    #ifndef NDEBUG // Integrity check.
     assert(N0 < vector->N0);
     #endif
 
@@ -144,7 +144,7 @@ typedef struct {
     const register Natural N0 = rows;
     const register Natural N1 = columns;
 
-    #ifndef NDEBUG // Integrity.
+    #ifndef NDEBUG // Integrity check.
     assert(N0 > 0);
     assert(N1 > 0);
     #endif
@@ -180,7 +180,7 @@ static inline Complex GetMatrixAt(const Matrix* matrix, const Natural row, const
     const register Natural N0 = row;
     const register Natural N1 = column;
 
-    #ifndef NDEBUG // Integrity.
+    #ifndef NDEBUG // Integrity check.
     assert(N0 < matrix->N0);
     assert(N1 < matrix->N1);
     #endif
@@ -201,7 +201,7 @@ static inline void SetMatrixAt(Matrix* matrix, const Natural row, const Natural 
     const register Natural N1 = column;
     const register Complex C0 = complex;
 
-    #ifndef NDEBUG // Integrity.
+    #ifndef NDEBUG // Integrity check.
     assert(N0 < matrix->N0);
     assert(N1 < matrix->N1);
     #endif
