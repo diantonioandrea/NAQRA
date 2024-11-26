@@ -269,11 +269,11 @@ static inline Complex Nzd2_C_C(const Complex C0) {
 static inline void P_C_0(const Complex C0) { 
     const register Real R0 = vgetq_lane_f64(C0, 0), R1 = vgetq_lane_f64(C0, 1); // C0.
 
-    if(fabs(R0) <= TOL1) { printf("\x1b[2m"); printf(" %.2e", 0.0); printf("\033[0m"); }
-    else { if(fabs(R0) <= TOL0) printf("\x1b[2m"); if(R0 >= 0.0) printf(" "); printf("%.2e", R0); printf("\033[0m"); }
+    if(fabs(R0) <= TOL1) { printf("\x1b[2m"); printf(" %.3e", 0.0); printf("\033[0m"); }
+    else { if(fabs(R0) <= TOL0) printf("\x1b[2m"); if(R0 >= 0.0) printf(" "); printf("%.3e", R0); printf("\033[0m"); }
 
-    if(fabs(R1) <= TOL1) { printf("\x1b[2m"); printf("+%.2ei ", 0.0); printf("\033[0m"); }
-    else { if(fabs(R1) <= TOL0) printf("\x1b[2m"); if(R1 >= 0.0) printf("+"); printf("%.2ei ", R1); printf("\033[0m"); }
+    if(fabs(R1) <= TOL1) { printf("\x1b[2m"); printf("+%.3ei ", 0.0); printf("\033[0m"); }
+    else { if(fabs(R1) <= TOL0) printf("\x1b[2m"); if(R1 >= 0.0) printf("+"); printf("%.3ei ", R1); printf("\033[0m"); }
 }
 
 /**
