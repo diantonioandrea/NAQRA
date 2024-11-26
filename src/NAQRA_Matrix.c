@@ -76,7 +76,7 @@ void Hsl_CqtCvNN_0(Complex* Cqt0, const Complex* Cv0, const Natural N0, const Na
                 Cqt0[N4 + 3] = S_CC_C(Cqt0[N4 + 3], M_CC_C(Cv0[N3 + 3], C0));
             }
 
-            for(N3 = N5, N4 = N2 * N0 + N5; N3 < N0; ++N3, ++N4)
+            for(; N3 < N0; ++N3, ++N4)
                 Cqt0[N4] = S_CC_C(Cqt0[N4], M_CC_C(Cv0[N3], C0));
         }
     }
