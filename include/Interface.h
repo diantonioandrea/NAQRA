@@ -20,6 +20,23 @@
 #include "./Matrix.h"
 
 
+// Complex.
+
+/**
+ * @brief Complex constructor.
+ * 
+ * @param real Real part.
+ * @param imaginary Imaginary part.
+ * @return Complex Complex number.
+ */
+static inline Complex NewComplex(const Real real, const Real imaginary) {
+    const register Real R0 = real;
+    const register Real R1 = imaginary;
+
+    return C_RR_C(R0, R1);
+}
+
+
 // Vectors.
 
 // Complex vector.
@@ -86,7 +103,7 @@ static inline void SetVectorAt(Vector* vector, const Natural index, const Comple
     assert(N0 < vector->N0);
     #endif
 
-    vector->Cv0[N0] = complex;
+    vector->Cv0[N0] = C0;
 }
 
 
@@ -144,8 +161,8 @@ static inline Complex GetMatrixAt(const Matrix* matrix, const Natural row, const
     const register Natural N1 = column;
 
     #ifndef NDEBUG // Integrity.
-    assert(N0 > 0);
-    assert(N1 > 0);
+    assert(N0 < matrix->N0);
+    assert(N1 < matrix->N1);
     #endif
 
     return matrix->Cm0[N1 * matrix->N0 + N0];
@@ -165,11 +182,11 @@ static inline void SetMatrixAt(Matrix* matrix, const Natural row, const Natural 
     const register Complex C0 = complex;
 
     #ifndef NDEBUG // Integrity.
-    assert(N0 > 0);
-    assert(N1 > 0);
+    assert(N0 < matrix->N0);
+    assert(N1 < matrix->N1);
     #endif
 
-    matrix->Cm0[N1 * matrix->N0 + N0] = complex;
+    matrix->Cm0[N1 * matrix->N0 + N0] = C0;
 }
 
 
