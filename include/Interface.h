@@ -72,6 +72,16 @@ typedef struct {
 }
 
 /**
+ * @brief Vector destructor.
+ * 
+ * @param vector Vector.
+ */
+static inline void FreeVector(Vector* vector) {
+    free(vector->Cv0);
+    free(vector);
+}
+
+/**
  * @brief Vector getter.
  * 
  * @param vector Vector.
@@ -146,6 +156,16 @@ typedef struct {
     M0->N1 = N1;
 
     return M0;
+}
+
+/**
+ * @brief Matrix destructor.
+ * 
+ * @param matrix Matrix.
+ */
+static inline void FreeMatrix(Matrix* matrix) {
+    free(matrix->Cm0);
+    free(matrix);
 }
 
 /**
