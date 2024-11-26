@@ -1,7 +1,6 @@
 .PHONY: all distclean
 
-CFLAGS += -Wall -std=c2x -pedantic -Wno-newline-eof -I./include -march=native -Ofast
-CFLAGS += -DVERBOSE
+CFLAGS += -Wall -std=c2x -pedantic -Wno-newline-eof -I./include -march=native -Ofast # -DNVERBOSE
 
 # Headers.
 HEADERS = ./include/*.h
