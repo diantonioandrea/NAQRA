@@ -12,7 +12,7 @@
 
 int main(int argc, char **argv) {
     if(argc < 4) {
-        printf("Usage: %s N (Rows and Columns) R R (Range)\n", argv[0]);
+        printf("Usage: %s N (Rows and Columns) R R (Range) * (Output, optional)\n", argv[0]);
         return -1;
     }
 
