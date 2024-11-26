@@ -228,7 +228,7 @@ void Eig_ChsnqtN_0(Complex *Chsnqt0, const Natural N0) {
     register Natural N1 = 0, N2, N3 = N0 - 1, N4;
     register Real R0;
 
-    #ifdef VERBOSE
+    #ifndef NVERBOSE
     printf("--- QR Algorithm\n");
     #endif
 
@@ -266,7 +266,7 @@ void Eig_ChsnqtN_0(Complex *Chsnqt0, const Natural N0) {
         }
     }
 
-    #ifdef VERBOSE
+    #ifndef NVERBOSE
     printf("Exited after %zu iterations.\n", N1 + 1);
     printf("---\n");
     #endif

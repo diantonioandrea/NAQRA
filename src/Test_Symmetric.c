@@ -47,26 +47,26 @@ int main(int argc, char **argv) {
         }
     }
 
-    #ifdef VERBOSE
+    #ifndef NVERBOSE
     printf("Testing on a symmetric %zu x %zu matrix.\n", N0, N0);
     printf("Coefficients generated in [%.1f, %.1f] x [%.1f, %.1f].\n\n", R0, R1, R0, R1);
     #endif
 
-    #ifdef VERBOSE
+    #ifndef NVERBOSE
     if(argc > 4)
         Pn_CmNN_0(Cm0, N0, N0);
     #endif
 
     Hsn_CqtN_0(Cm0, N0); // Hessenberg.
 
-    #ifdef VERBOSE
+    #ifndef NVERBOSE
     if(argc > 4)
         Pn_CmNN_0(Cm0, N0, N0);
     #endif
 
     Eig_ChsnqtN_0(Cm0, N0); // Eigenvalues.
 
-    #ifdef VERBOSE
+    #ifndef NVERBOSE
     if(argc > 4)
         Pn_CmNN_0(Cm0, N0, N0);
     #endif
