@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-// Matrices.
-#include "../include/Matrix.h"
+// Interface.
+#include "../include/Interface.h"
 
 #endif
