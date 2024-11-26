@@ -19,7 +19,7 @@
  * @return Vector* Vector.
  */
 [[nodiscard]] Vector* Eigenvalues(const Matrix* matrix) {
-    #ifndef NDEBUG // Integrity.
+    #ifndef NDEBUG // Integrity check.
     assert(matrix->N0 == matrix->N1);
     #endif
 
