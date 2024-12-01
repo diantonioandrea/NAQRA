@@ -36,7 +36,7 @@ make
 
 The executables are then located under `executables/`.
 
-Tests require the size of the test matrix, along with the range of random values used to initialize the matrices, specified as two real numbers. An optional argument can be provided to enable the output.
+Tests require the size of the test matrix, along with the range of random values used to initialize it, specified as two real numbers. An optional argument can be provided to enable the output.
 
 ## Usage
 
