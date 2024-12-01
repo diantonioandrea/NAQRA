@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
 
     #ifndef NVERBOSE
     printf("Testing on a symmetric %zu x %zu matrix.\n", N0, N0);
-    printf("Coefficients generated in [%.1f, %.1f] x [%.1f, %.1f].\n\n", R0, R1, R0, R1);
+    printf("Coefficients generated in [%.1f, %.1f].\n\n", R0, R1, R0, R1);
     #endif
 
     #ifndef NVERBOSE
